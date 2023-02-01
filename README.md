@@ -1,5 +1,5 @@
 # SmartCabinet
-Mechanism to monitor your snack drawer at work
+Mechanism to monitor your snack drawer at work.
 
 Project Team Members: 
 
