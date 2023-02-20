@@ -2,6 +2,7 @@ import random
 import spidev
 import time
 import RPi.GPIO as GPIO
+import picamera
 
 def info():
     '''Prints a basic library description'''
