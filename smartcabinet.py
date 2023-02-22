@@ -3,6 +3,7 @@ import spidev
 import time
 import RPi.GPIO as GPIO
 import picamera
+import picamera.array
 import cv2
 
 def info():
@@ -23,20 +24,42 @@ def turnOnCamera():
     time.sleep(5)
     camera.stop_preview()
     print("Camera turned on!")
+
+def takePictureOfFace():
+    '''
+    TODO: Pass an image counter, the name of the image itself, and someImage
+    '''
+    img_name = "images/" + name + "/image{}.jpg".format(img_name)
+    cv2.imwrite(img_name, someImage)
+    print("{} written!".format(img_name))
+    # img_counter += 1
     
 def identifyFace():
-    '''The faceIdentified is a placeholder for when we implement a system to detect faces'''
-    print("This is the person taking candy from the container!")
-    faceIdentified = bool(random.choice([True, False]))
-    return faceIdentified
-    
-def takePictureOfFace():
-    faceThere = identifyFace()
-    if faceThere == True:
-        print("Photo taken!")
-    else:
-        print("No photo taken...")
+    '''
+    This will open up a video feed that is played through cv2
+    The first two lines will simply make sure that the camera is continuously rolling
+    while we play around with it and have it detect faces for us
+    '''
+    camera = picamera.PiCamera()
+    rawCapture = picamera.array.PiRGBArray(camera, size=(640, 480))
+    time.sleep(2)
+    while True:
+        for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+            someImage = frame.array
 
+            # show the frame
+            cv2.imshow("Press Space to take an image, ESC to exit", someImage)
+            key_press = cv2.waitKey(1) & 0xFF
+
+            # clear the stream in preparation for the next frame
+            rawCapture.truncate(0)
+
+            # If ESC key pressed, we break out of this loop to stop the program
+            # If we hit SPACE, we take an image by taking a photo
+            if key_press == 27:
+                break
+            elif key_press == 32:
+                takePictureOfFace()
 
 # Define Variables
 # delay = 0.5
