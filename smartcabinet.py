@@ -1,10 +1,11 @@
 import random
+import math
 import spidev
 import time
 import RPi.GPIO as GPIO
 import picamera
 import picamera.array
-import cv2
+# import cv2
 
 def info():
     '''Prints a basic library description'''
@@ -62,27 +63,29 @@ def identifyFace():
                 takePictureOfFace()
 
 # Define Variables
-# delay = 0.5
-# pad_channel = 0
+delay = 0.5
+pad_channel = 0
 
 # Create SPI
-# spi = spidev.SpiDev()
-# spi.open(0, 0)
-# spi.max_speed_hz=1000000
+spi = spidev.SpiDev()
+spi.open(0, 0)
+spi.max_speed_hz=1000000
 
-# def readadc(adcnum):
-#    # read SPI data
-#    if adcnum > 7 or adcnum < 0:
-#        return -1
-#    r = spi.xfer2([1, 8 + adcnum << 4, 0])
-#    data = ((r[1] & 3) << 8) + r[2]
-#   return data
+def readadc(adcnum):
+   # read SPI data
+   if adcnum > 7 or adcnum < 0:
+       return -1
+   r = spi.xfer2([1, 8 + adcnum << 4, 0])
+   data = ((r[1] & 3) << 8) + r[2]
+   return data
 
-# try:
-#    while True:
-#        pad_value = readadc(pad_channel)
-#        print("---------------------------------------")
-#        print("Pressure Pad Value: %d" % pad_value)
-#        time.sleep(delay)
-# except KeyboardInterrupt:
-#    pass
+try:
+   while True:
+       pad_value = readadc(pad_channel) + 1
+       new_pad_value = pad_value * math.log(pad_value) * 16.5
+       new_pad_lbs = new_pad_value * .0022
+       print("---------------------------------------")
+       print("Pressure Pad Value: %d" % new_pad_value + "g or: " + str(new_pad_lbs) + "lbs")
+       time.sleep(delay)
+except KeyboardInterrupt:
+   pass
