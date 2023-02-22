@@ -5,7 +5,7 @@ import time
 import RPi.GPIO as GPIO
 import picamera
 import picamera.array
-# import cv2
+import cv2
 
 def info():
     '''Prints a basic library description'''
@@ -18,6 +18,8 @@ def cameraSetup():
     time.sleep(5)
     print("Camera set up successfully!")
     return True
+    # Make sure to return camera object or even global.
+    # Have a global camera to use or have a class.
 
 def turnOnCamera():
     camera = picamera.PiCamera()
@@ -26,7 +28,7 @@ def turnOnCamera():
     camera.stop_preview()
     print("Camera turned on!")
 
-def takePictureOfFace():
+def savePhototoFile():
     '''
     TODO: Pass an image counter, the name of the image itself, and someImage
     '''
