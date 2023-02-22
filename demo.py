@@ -1,6 +1,5 @@
 import smartcabinet
 import time
-import picamera
 
 smartcabinet.cameraSetup()
 smartcabinet.turnOnCamera()

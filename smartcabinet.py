@@ -3,16 +3,25 @@ import spidev
 import time
 import RPi.GPIO as GPIO
 import picamera
+import cv2
 
 def info():
     '''Prints a basic library description'''
     print('Software library for the SmartCabinet project.')
 
 def cameraSetup():
+    camera = picamera.PiCamera()
+    camera.resolution = (640, 480)
+    camera.framerate = 24
+    time.sleep(5)
     print("Camera set up successfully!")
     return True
 
 def turnOnCamera():
+    camera = picamera.PiCamera()
+    camera.start_preview()
+    time.sleep(5)
+    camera.stop_preview()
     print("Camera turned on!")
     
 def identifyFace():
