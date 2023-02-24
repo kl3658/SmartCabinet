@@ -3,66 +3,81 @@ import math
 import spidev
 import time
 import RPi.GPIO as GPIO
-import picamera
+#import picamera                     # Implemented in global_ file
 import picamera.array
-import cv2
+from global_ import camera
+#import cv2                          # Will be discussed later on
+
+# Create PiCamera and global variables
+#camera = picamera.PiCamera()
 
 def info():
     '''Prints a basic library description'''
     print('Software library for the SmartCabinet project.')
 
 def cameraSetup():
-    camera = picamera.PiCamera()
+    '''
+    This is used to st up the properties of the PiCamera
+    Settings can be changed through editing the fucntions themselves
+    '''
     camera.resolution = (640, 480)
     camera.framerate = 24
-    time.sleep(5)
+    camera.iso = 400
+    camera.vflip = True             # Camera is upside down, so get it rightside-up
+    time.sleep(2)
     print("Camera set up successfully!")
-    return True
-    # Make sure to return camera object or even global.
-    # Have a global camera to use or have a class.
 
 def turnOnCamera():
-    camera = picamera.PiCamera()
+    '''
+    Turn on the camera by having us look at the preview on the main screen. May not work with VNC
+    '''
     camera.start_preview()
-    time.sleep(5)
-    camera.stop_preview()
+    time.sleep(2)
     print("Camera turned on!")
 
-def savePhototoFile():
+def savePhotoToFile(img_counter):
     '''
     TODO: Pass an image counter, the name of the image itself, and someImage
     '''
-    img_name = "images/" + name + "/image{}.jpg".format(img_name)
-    cv2.imwrite(img_name, someImage)
+    img_name = "/home/pi/Pictures/image{}.jpg".format(img_counter)
+    camera.capture(img_name)
     print("{} written!".format(img_name))
-    # img_counter += 1
     
-def identifyFace():
+def flipVerticalOrient():
+    camera.vflip = not camera.vflip
+
+def setISOofCamera():
+    while True:
+        try:
+            isovalue = int(input('Enter an ISO value between 0 and 1600. 0 will set it to AUTO:'))
+            if (isovalue < 0) or (isovalue > 1600):
+                raise ValueError
+            break
+        except ValueError:
+            print('Integers only please! If you did enter an integer, it was an illegal value!')
+            continue
+    
+def useCamera():
     '''
-    This will open up a video feed that is played through cv2
-    The first two lines will simply make sure that the camera is continuously rolling
-    while we play around with it and have it detect faces for us
+    While the camera is turned on, we can perform various properties, such as taking pictures and even
+    being to change its properties on the fly.
+    TODO: Rewrite the function to do basic stuff. OPTIONAL: Find ways to implement more functions to
+    change while this program is running, mainly through keybindings.
     '''
-    camera = picamera.PiCamera()
-    rawCapture = picamera.array.PiRGBArray(camera, size=(640, 480))
+    img_val = 1
     time.sleep(2)
     while True:
-        for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-            someImage = frame.array
-
-            # show the frame
-            cv2.imshow("Press Space to take an image, ESC to exit", someImage)
-            key_press = cv2.waitKey(1) & 0xFF
-
-            # clear the stream in preparation for the next frame
-            rawCapture.truncate(0)
-
-            # If ESC key pressed, we break out of this loop to stop the program
-            # If we hit SPACE, we take an image by taking a photo
-            if key_press == 27:
-                break
-            elif key_press == 32:
-                takePictureOfFace()
+        key = input('Press key, then hit Enter. Enter q to exit: ')
+        if key == 'f':
+            print('Flipping Vertical Orientation')
+            flipVerticalOrient()
+        if key == 'p':
+            print('Taking Picture...')
+            savePhotoToFile(img_val)
+            img_val += 1
+        if key == 'q':
+            print('Quitting Program')
+            break
 
 # Define Variables
 delay = 0.5
@@ -74,20 +89,19 @@ spi.open(0, 0)
 spi.max_speed_hz=1000000
 
 def readadc(adcnum):
-   # read SPI data
-   if adcnum > 7 or adcnum < 0:
-       return -1
-   r = spi.xfer2([1, 8 + adcnum << 4, 0])
-   data = ((r[1] & 3) << 8) + r[2]
-   return data
+    if adcnum > 7 or adcnum < 0:
+        return -1
+    r = spi.xfer2([1, 8 + adcnum << 4, 0])
+    data = ((r[1] & 3) << 8) + r[2]
+    return data
 
 try:
-   while True:
-       pad_value = readadc(pad_channel) + 1
-       new_pad_value = pad_value * math.log(pad_value) * 16.5
-       new_pad_lbs = new_pad_value * .0022
-       print("---------------------------------------")
-       print("Pressure Pad Value: %d" % new_pad_value + "g or: " + str(new_pad_lbs) + "lbs")
-       time.sleep(delay)
+    while True:
+        pad_value = readadc(pad_channel) + 1
+        new_pad_value = pad_value * math.log(pad_value) * 16.5
+        new_pad_lbs = new_pad_value * .0022
+        print("---------------------------------------")
+        print("Pressure Pad Value: %d" % new_pad_value + "g or: " + str(new_pad_lbs) + "lbs")
+        time.sleep(delay)
 except KeyboardInterrupt:
-   pass
+    pass
