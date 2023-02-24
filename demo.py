@@ -5,9 +5,9 @@ smartcabinet.cameraSetup()
 smartcabinet.turnOnCamera()
 
 # Used to test out the identifyFace function
-smartcabinet.identifyFace()
+smartcabinet.useCamera()
 
 # We could test this function out 3 times, which calls identifyFace in turn
-smartcabinet.takePictureOfFace()
-smartcabinet.takePictureOfFace()
-smartcabinet.takePictureOfFace()
+smartcabinet.savePhotoToFile(1)
+smartcabinet.savePhotoToFile(2)
+smartcabinet.savePhotoToFile(3)

@@ -77,6 +77,7 @@ def useCamera():
             img_val += 1
         if key == 'q':
             print('Quitting Program')
+            camera.stop_preview()
             break
 
 # Define Variables
