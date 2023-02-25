@@ -69,6 +69,7 @@ def setISOofCamera():
             isovalue = int(input('Enter an ISO value between 0 and 1600. 0 will set it to AUTO:'))
             if (isovalue < 0) or (isovalue > 1600):
                 raise ValueError
+            camera.iso = isovalue
             break
         except ValueError:
             print('Integers only please! If you did enter an integer, it was an illegal value!')
