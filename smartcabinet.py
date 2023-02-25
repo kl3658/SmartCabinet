@@ -108,12 +108,10 @@ def nightModeSet(nightModeVal):
                 raise ValueError
             elif (nightModeVal == 1):
                 camera.framerate = Fraction(1, 6)
-                camera.sensor = 3
                 camera.shutter_speed = 6000000      # This is in microseconds, so this is 6 seconds
                 camera.iso = 800
             elif (nightModeVal == 0):
                 camera.framerate = 30
-                camera.sensor = 0
                 camera.shutter_speed = 0            # Automatic at 0
                 camera.iso = 800
             return nightModeVal
