@@ -104,7 +104,7 @@ def nightModeSet(nightModeVal):
     while True:    
         try:
             nightModeVal = int(input("Would you like to set night mode? 0 for NO, 1 for YES: "))
-            if (nightModeVal != 0) or (nightModeVal != 1):
+            if (nightModeVal != 0) and (nightModeVal != 1):
                 raise ValueError
             elif (nightModeVal == 1):
                 camera.framerate = Fraction(1, 6)
