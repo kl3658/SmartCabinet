@@ -125,8 +125,6 @@ def useCamera():
     '''
     While the camera is turned on, we can perform various properties, such as taking pictures and even
     being to change its properties on the fly.
-    TODO: Rewrite the function to do basic stuff. OPTIONAL: Find ways to implement more functions to
-    change while this program is running, mainly through keybindings.
     '''
     img_val = 1
     nightModeBit = 0
