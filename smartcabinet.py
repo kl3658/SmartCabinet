@@ -37,12 +37,29 @@ def turnOnCamera():
 
 def savePhotoToFile(img_counter):
     '''
-    TODO: Pass an image counter, the name of the image itself, and someImage
+    Simply saves an image to somewhere on the Raspberry Pi. The directory can be altered.
     '''
     img_name = "/home/pi/Pictures/image{}.jpg".format(img_counter)
+    # Allow some time to take an image
+    time.sleep(2)
     camera.capture(img_name)
     print("{} written!".format(img_name))
-    
+
+def captureYUVArray(array_counter):
+    '''
+    Similar to savePhotoToFile, except it captures a YUV image and array instead.
+    '''
+    with picamera.array.PiYUVArray(camera) as output:
+        array_name = "/home/pi/Pictures/YUVarray{}.jpg".format(array_counter)
+        # Allow some time to take an image
+        time.sleep(2)
+        camera.capture(output, 'yuv')
+        print("{} written!".format(output))
+        # Show size of YUV data
+        print('Array Shape: ', output.array.shape)
+        # Show size of RGB converted data
+        print('RGB Array Shape: ', output.rgb_array.shape)
+
 def flipVerticalOrient():
     camera.vflip = not camera.vflip
 
@@ -69,14 +86,19 @@ def useCamera():
     while True:
         key = input('Press key, then hit Enter. Enter q to exit: ')
         if key == 'f':
-            print('Flipping Vertical Orientation')
+            print('Flipping Vertical Orientation...')
             flipVerticalOrient()
+        if key == 'i':
+            print('Changing ISO of the Camera...')
+            setISOofCamera()
         if key == 'p':
             print('Taking Picture...')
             savePhotoToFile(img_val)
+            print('Taking YUV array...')
+            captureYUVArray(img_val)
             img_val += 1
         if key == 'q':
-            print('Quitting Program')
+            print('Quitting Camera...')
             camera.stop_preview()
             break
 
