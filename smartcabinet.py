@@ -6,6 +6,7 @@ import RPi.GPIO as GPIO
 #import picamera                     # Implemented in global_ file
 import picamera.array
 from global_ import camera
+from fractions import Fraction
 #import cv2                          # Will be discussed later on
 
 # Create PiCamera and global variables
@@ -35,24 +36,30 @@ def turnOnCamera():
     time.sleep(2)
     print("Camera turned on!")
 
-def savePhotoToFile(img_counter):
+def savePhotoToFile(img_counter, nightModeVal):
     '''
     Simply saves an image to somewhere on the Raspberry Pi. The directory can be altered.
     '''
     img_name = "/home/pi/Pictures/image{}.jpg".format(img_counter)
-    # Allow some time to take an image
-    time.sleep(2)
+    # Allow some time to take an image. If night mode is set, this should take 30 seconds
+    if nightModeVal == 1:
+        time.sleep(30)
+    else:
+        time.sleep(2)
     camera.capture(img_name)
     print("{} written!".format(img_name))
 
-def captureYUVArray(array_counter):
+def captureYUVArray(array_counter, nightModeVal):
     '''
     Similar to savePhotoToFile, except it captures a YUV image and array instead.
     '''
     with picamera.array.PiYUVArray(camera) as output:
         array_name = "/home/pi/Pictures/YUVarray{}.jpg".format(array_counter)
-        # Allow some time to take an image
-        time.sleep(2)
+        # Allow some time to take an image. If night mode is set, this should take 30 seconds
+        if nightModeVal == 1:
+            time.sleep(30)
+        else:
+            time.sleep(2)
         camera.capture(output, 'yuv')
         print("{} written!".format(output))
         # Show size of YUV data
@@ -74,7 +81,46 @@ def setISOofCamera():
         except ValueError:
             print('Integers only please! If you did enter an integer, it was an illegal value!')
             continue
+
+def setFramerateofCamera():
+    while True:
+        try:
+            framerateVal = int(input('Enter an framerate value:'))
+            if (framerateVal < 0) or (framerateVal > 60):
+                raise ValueError
+            camera.framerate = framerateVal
+            break
+        except ValueError:
+            print('Integers only please! If you did enter an integer, it was an illegal value!')
+            continue
     
+def nightModeSet(nightModeVal):
+    '''
+    Asks to set night mode or not. Predetermined settings for night mode shown below.
+
+    Adapted from:
+    https://picamera.readthedocs.io/en/release-1.13/recipes1.html#capturing-in-low-light
+    '''
+    while True:    
+        try:
+            nightModeVal = int(input("Would you like to set night mode? 0 for NO, 1 for YES: "))
+            if (nightModeVal != 0) or (nightModeVal != 1):
+                raise ValueError
+            elif (nightModeVal == 1):
+                camera.framerate = Fraction(1, 6)
+                camera.sensor = 3
+                camera.shutter_speed = 6000000      # This is in microseconds, so this is 6 seconds
+                camera.iso = 800
+            elif (nightModeVal == 0):
+                camera.framerate = 30
+                camera.sensor = 0
+                camera.shutter_speed = 0            # Automatic at 0
+                camera.iso = 800
+            return nightModeVal
+        except ValueError:
+            print('Integers only please! If you did enter an integer, it was an illegal value!')
+            continue
+
 def useCamera():
     '''
     While the camera is turned on, we can perform various properties, such as taking pictures and even
@@ -83,9 +129,10 @@ def useCamera():
     change while this program is running, mainly through keybindings.
     '''
     img_val = 1
+    nightModeBit = 0
     time.sleep(2)
     while True:
-        key = input('Press key, then hit Enter. Enter q to exit: ')
+        key = input('Press key, then hit Enter. Enter p to snap a photo. Enter q to exit: ')
         if key == 'f':
             print('Flipping Vertical Orientation...')
             flipVerticalOrient()
@@ -94,10 +141,16 @@ def useCamera():
             setISOofCamera()
         if key == 'p':
             print('Taking Picture...')
-            savePhotoToFile(img_val)
+            savePhotoToFile(img_val, nightModeBit)
             print('Taking YUV array...')
-            captureYUVArray(img_val)
+            captureYUVArray(img_val, nightModeBit)
             img_val += 1
+        if key == 'n':
+            print('Night Mode Activate...')
+            nightModeBit = nightModeSet(nightModeBit)
+        if key == 'r':
+            print('Setting framerate...')
+            setFramerateofCamera()
         if key == 'q':
             print('Quitting Camera...')
             camera.stop_preview()
