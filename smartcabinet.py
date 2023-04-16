@@ -1,14 +1,16 @@
+from global_ import camera
+from fractions import Fraction
+from tmlib import *
 import random
 import math
 import spidev
 import time
-import RPi.GPIO as GPIO
 import picamera.array
-from global_ import camera
-from fractions import Fraction
 import time
 import sys
-#import cv2                          # Will be discussed later on
+import cv2
+import RPi.GPIO as GPIO
+import numpy as np
 
 # Create PiCamera and global variables
 #camera = picamera.PiCamera()
@@ -22,12 +24,16 @@ def cameraSetup():
     This is used to st up the properties of the PiCamera
     Settings can be changed through editing the fucntions themselves
     '''
-    camera.resolution = (640, 480)
+    camera.resolution = (320, 240)
     camera.framerate = 24
     camera.iso = 400
     camera.vflip = True             # Camera is upside down, so get it rightside-up
     time.sleep(2)
     print("Camera set up successfully!")
+
+    # Load the model - one time only during startup
+    tm = TeachableMachineTf()
+    tm.load('/home/pi/teachablemachine-python/tflite_model/model_unquant.tflite', '/home/pi/teachablemachine-python/tflite_model/labels.txt')
 
 def turnOnCamera():
     '''
@@ -50,6 +56,19 @@ def savePhotoToFile(img_counter, nightModeVal):
     camera.capture(img_name)
     print("{} written!".format(img_name))
 
+def predict_face():
+    # Each time you want to capture an image - Turn on camera
+    cap = cv2.VideoCapture(0)
+    # Get image
+    _, img = cap.read()
+
+    # Pass image to model, get ID of most likely person
+    res, name = tm.predict(img)
+    idx = np.argmax(res)
+    print("Name: ", name)
+    print("Res: ", res)
+    print("idx: ", idx)
+
 def captureYUVArray(array_counter, nightModeVal):
     '''
     Similar to savePhotoToFile, except it captures a YUV image and array instead.
@@ -61,7 +80,7 @@ def captureYUVArray(array_counter, nightModeVal):
             time.sleep(30)
         else:
             time.sleep(2)
-        camera.capture(output, 'yuv')
+        camera.capture(array_name, 'yuv')
         print("{} written!".format(output))
         # Show size of YUV data
         print('Array Shape: ', output.array.shape)
@@ -139,6 +158,8 @@ def useCamera():
         if key == 'p':
             print('Taking Picture...')
             savePhotoToFile(img_val, nightModeBit)
+            print('Predicting...')
+            predict_face()
             print('Taking YUV array...')
             captureYUVArray(img_val, nightModeBit)
             img_val += 1
