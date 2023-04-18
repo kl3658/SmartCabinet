@@ -12,9 +12,6 @@ import cv2
 import RPi.GPIO as GPIO
 import numpy as np
 
-# Create PiCamera and global variables
-#camera = picamera.PiCamera()
-
 def info():
     '''Prints a basic library description'''
     print('Software library for the SmartCabinet project.')
@@ -24,7 +21,7 @@ def cameraSetup():
     This is used to st up the properties of the PiCamera
     Settings can be changed through editing the fucntions themselves
     '''
-    camera.resolution = (320, 240)
+    camera.resolution = (640, 480)
     camera.framerate = 24
     camera.iso = 400
     camera.vflip = True             # Camera is upside down, so get it rightside-up
