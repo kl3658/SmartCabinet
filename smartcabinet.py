@@ -1,6 +1,6 @@
 from global_ import camera
 from fractions import Fraction
-from tmlib import *
+#from tmlib import *
 from mfrc522 import SimpleMFRC522
 import random
 import math
@@ -9,19 +9,18 @@ import time
 import picamera.array
 import time
 import sys
-import cv2
+#import cv2
 import RPi.GPIO as GPIO
 import numpy as np
-
+"""
 def info():
-    '''Prints a basic library description'''
+    #Prints a basic library description
     print('Software library for the SmartCabinet project.')
 
 def cameraSetup():
-    '''
-    This is used to st up the properties of the PiCamera
-    Settings can be changed through editing the fucntions themselves
-    '''
+
+    #This is used to st up the properties of the PiCamera
+    #Settings can be changed through editing the fucntions themselves
     camera.resolution = (640, 480)
     camera.framerate = 24
     camera.iso = 400
@@ -111,7 +110,7 @@ def setFramerateofCamera():
         except ValueError:
             print('Integers only please! If you did enter an integer, it was an illegal value!')
             continue
-    
+
 def nightModeSet(nightModeVal):
     '''
     Asks to set night mode or not. Predetermined settings for night mode shown below.
@@ -119,7 +118,7 @@ def nightModeSet(nightModeVal):
     Adapted from:
     https://picamera.readthedocs.io/en/release-1.13/recipes1.html#capturing-in-low-light
     '''
-    while True:    
+    while True:
         try:
             nightModeVal = int(input("Would you like to set night mode? 0 for NO, 1 for YES: "))
             if (nightModeVal != 0) and (nightModeVal != 1):
@@ -171,6 +170,9 @@ def useCamera():
             print('Quitting Camera...')
             camera.stop_preview()
             break
+"""
+
+# Load Cell Setup
 
 # Define Variables
 delay = 0.5
@@ -300,7 +302,7 @@ if id:
     print(hex(id))
 else:
     print("No tag detected")
-    
+
 GPIO.cleanup()
 
 # Section for the Load Cell Code
@@ -320,7 +322,7 @@ def cleanAndExit():
 
     if not EMULATE_HX711:
         GPIO.cleanup()
-        
+
     print("Bye!")
     sys.exit()
 
@@ -347,16 +349,16 @@ while True:
         # These three lines are usefull to debug wether to use MSB or LSB in the reading formats
         # for the first parameter of "hx.set_reading_format("LSB", "MSB")".
         # Comment the two lines "val = hx.get_weight(5)" and "print val" and uncomment these three lines to see what it prints.
-        
+
         # np_arr8_string = hx.get_np_arr8_string()
         # binary_string = hx.get_binary_string()
         # print binary_string + " " + np_arr8_string
-        
+
         # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
         val = hx.get_weight(5)
         print(val)
 
-        # To get weight from both channels (if you have load cells hooked up 
+        # To get weight from both channels (if you have load cells hooked up
         # to both channel A and B), do something like this
         #val_A = hx.get_weight_A(5)
         #val_B = hx.get_weight_B(5)
