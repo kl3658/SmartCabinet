@@ -280,7 +280,7 @@ GPIO.cleanup()
 
 EMULATE_HX711=False
 
-referenceUnit = 1
+referenceUnit = -6358       # Reference Value of Tommy's Phone
 
 if not EMULATE_HX711:
     import RPi.GPIO as GPIO
