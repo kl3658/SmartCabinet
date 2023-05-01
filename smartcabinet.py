@@ -248,10 +248,10 @@ def readLine(line, characters):
 try:
     while True:
         # call the readLine function for each row of the keypad
-        readLine(L1, ["1","2","3"])
-        readLine(L2, ["4","5","6"])
-        readLine(L3, ["7","8","9"])
-        readLine(L4, ["*","0","#"])
+        readLine(R1, ["1","2","3"])
+        readLine(R2, ["4","5","6"])
+        readLine(R3, ["7","8","9"])
+        readLine(R4, ["*","0","#"])
         time.sleep(0.1)
 except KeyboardInterrupt:
     print("\nApplication stopped!")
