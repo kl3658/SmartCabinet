@@ -299,7 +299,7 @@ def cleanAndExit():
 
 hx = HX711(5, 6) #GPIO Pins 5 and 6
 
-hx.set_reading_format("MSB", "MSB")
+hx.set_reading_format("LSB", "MSB")
 
 # HOW TO CALCULATE THE REFFERENCE UNIT
 # To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
