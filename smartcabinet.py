@@ -175,14 +175,14 @@ def useCamera():
 # Keypad part goes here. Remember to somehow get them into functions and even have properties
 # called via functions like with the picamera stuff. Also a password system. GPIO Pins are shown for the keypad
 
-R1 = 13
-R2 = 19
-R3 = 26
-R4 = 12
+R1 = 12
+R2 = 16
+R3 = 20
+R4 = 21
 
-C1 = 16
-C2 = 20
-C3 = 21
+C1 = 13
+C2 = 19
+C3 = 26
 
 # Initialize the GPIO pins
 
