@@ -172,6 +172,7 @@ def useCamera():
             break
 """
 
+''' Task 1 '''
 # Keypad part goes here. Remember to somehow get them into functions and even have properties
 # called via functions like with the picamera stuff. Also a password system. GPIO Pins are shown for the keypad
 
@@ -227,6 +228,7 @@ try:
 except KeyboardInterrupt:
     print("\nApplication stopped!")
 
+''' Task 2 '''
 # Servo part starts here
 
 servoPIN = 18
@@ -258,6 +260,7 @@ except KeyboardInterrupt:
     p.stop()
     GPIO.cleanup()
 
+''' Task 3 '''
 # RFID Part Code Starts Here
 
 reader = SimpleMFRC522()
@@ -276,6 +279,7 @@ else:
 
 GPIO.cleanup()
 
+''' Task 4 '''
 # Section for the Load Cell Code
 
 EMULATE_HX711=False
