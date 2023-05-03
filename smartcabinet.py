@@ -263,21 +263,21 @@ except KeyboardInterrupt:
 ''' Task 3 '''
 # RFID Part Code Starts Here
 
-# reader = SimpleMFRC522()
+reader = SimpleMFRC522()
 
-# print("Hold a tag near the reader")
-# print("Reading tag in 1 second...")
-# time.sleep(1)
+print("Hold a tag near the reader")
+print("Reading tag in 1 second...")
+time.sleep(1)
 
-# # Keep it for now. We only want it to run if the user calls for it from the browser UI.
-# id = reader.read_id_no_block()
+# Keep it for now. We only want it to run if the user calls for it from the browser UI.
+id = reader.read_id_no_block()
 
-# if id:
-#     print(hex(id))
-# else:
-#     print("No tag detected")
+if id:
+    print(hex(id))
+else:
+    print("No tag detected")
 
-# GPIO.cleanup()
+GPIO.cleanup()
 
 ''' Task 4 '''
 # Section for the Load Cell Code
