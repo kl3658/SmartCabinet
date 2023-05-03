@@ -289,8 +289,10 @@ referenceUnit = 5282       # Reference Value of Tommy's Phone
 if not EMULATE_HX711:
     import RPi.GPIO as GPIO
     from hx711 import HX711
+    print("Not emualated")
 else:
     from emulated_hx711 import HX711
+    print("Emulated")
 
 def cleanAndExit():
     print("Cleaning...")
@@ -303,7 +305,7 @@ def cleanAndExit():
 
 hx = HX711(5, 6) #GPIO Pins 5 and 6
 
-hx.set_reading_format("MSB", "MSB")
+hx.set_reading_format("LSB", "MSB")
 
 # HOW TO CALCULATE THE REFFERENCE UNIT
 # To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
