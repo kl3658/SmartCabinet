@@ -24,3 +24,7 @@ print("Servo gone!")
 print("RFID coming!")
 smartcabinet.rfidOperate()
 print("RFID gone!")
+
+print("Load Cell Incoming!")
+smartcabinet.loadCellOperate()
+print("Load Cell gone!")
