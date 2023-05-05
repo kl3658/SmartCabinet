@@ -234,6 +234,8 @@ def keypadOperate():
     except KeyboardInterrupt:
         print("\nApplication stopped!")
 
+keypadOperate()
+
 ''' Task 2 '''
 # Servo part starts here
 
