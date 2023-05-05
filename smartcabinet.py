@@ -196,6 +196,8 @@ def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
     GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
+    print("Setup complete")
+
 # The readLine function implements the procedure discussed in the article
 # It sends out a single pulse to one of the rows of the keypad
 # and then checks each column for changes
@@ -213,10 +215,12 @@ def readLine(line, characters, C1, C2, C3):
     GPIO.output(line, GPIO.LOW)
 
 def keypadOperate():
-
+    print("keypadOperate running!")
     # Redefine the pins if necessary by calling this function and changing the pins from there.
     R1, R2, R3, R4, C1, C2, C3 = keypadGPIOSetup()
     pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3)
+
+    print("back to keypadOperate")
 
     try:
         while True:
