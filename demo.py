@@ -12,17 +12,17 @@ print("Info gone!")
 
 # Test out the keypad
 print("Keypad coming!")
-smartcabinet.keypadOperate()
+#smartcabinet.keypadOperate()
 print("Keypad Gone!")
 
 # Test out the servo
 print("Servo coming!")
-smartcabinet.servoOperate()
+#smartcabinet.servoOperate()
 print("Servo gone!")
 
 # Test out the RFID
 print("RFID coming!")
-smartcabinet.rfidOperate()
+#smartcabinet.rfidOperate()
 print("RFID gone!")
 
 print("Load Cell Incoming!")
