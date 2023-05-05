@@ -375,4 +375,4 @@ def loadCellOperate():
             time.sleep(0.1)
 
         except (KeyboardInterrupt, SystemExit):
-            cleanAndExit()
+            cleanAndExit(EMULATE_HX711)
