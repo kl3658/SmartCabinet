@@ -237,119 +237,137 @@ def keypadOperate():
 ''' Task 2 '''
 # Servo part starts here
 
-servoPIN = 18
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(servoPIN, GPIO.OUT)
+def servoSetup():
+    print("Setting up servo!")
+    GPIO.setwarnings(False)
+    servoPIN = 18
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(servoPIN, GPIO.OUT)
 
-p = GPIO.PWM(servoPIN, 50)      # GPIO 18 for PWM with 50Hz
-p.start(2.5)                    # Initialization
+    p = GPIO.PWM(servoPIN, 50)      # GPIO 18 for PWM with 50Hz
+    p.start(2.5)                    # Initialization
 
-try:
-    while True:
-        p.ChangeDutyCycle(5)
-        time.sleep(0.5)
-        p.ChangeDutyCycle(7.5)
-        time.sleep(0.5)
-        p.ChangeDutyCycle(10)
-        time.sleep(0.5)
-        p.ChangeDutyCycle(12.5)
-        time.sleep(0.5)
-        p.ChangeDutyCycle(10)
-        time.sleep(0.5)
-        p.ChangeDutyCycle(7.5)
-        time.sleep(0.5)
-        p.ChangeDutyCycle(5)
-        time.sleep(0.5)
-        p.ChangeDutyCycle(2.5)
-        time.sleep(0.5)
-except KeyboardInterrupt:
-    p.stop()
-    GPIO.cleanup()
+    print("Servo setup complete!")
+
+    return p
+
+def servoPortion():
+    print("Servo Code Running!")
+    p = servoSetup()
+
+    try:
+        while True:
+            p.ChangeDutyCycle(5)
+            time.sleep(0.5)
+            p.ChangeDutyCycle(7.5)
+            time.sleep(0.5)
+            p.ChangeDutyCycle(10)
+            time.sleep(0.5)
+            p.ChangeDutyCycle(12.5)
+            time.sleep(0.5)
+            p.ChangeDutyCycle(10)
+            time.sleep(0.5)
+            p.ChangeDutyCycle(7.5)
+            time.sleep(0.5)
+            p.ChangeDutyCycle(5)
+            time.sleep(0.5)
+            p.ChangeDutyCycle(2.5)
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        p.stop()
+        GPIO.cleanup()
 
 ''' Task 3 '''
 # RFID Part Code Starts Here
 
-reader = SimpleMFRC522()
+def rfidSetup():
+    print("Setting up RFID")
+    reader = SimpleMFRC522()
+    print("RFID Setup Complete!")
+    return reader
 
-print("Hold a tag near the reader")
-print("Reading tag in 1 second...")
-time.sleep(1)
+def rfidPortion():
+    reader = rfidSetup()
+    print("Hold a tag near the reader")
+    print("Reading tag in 1 second...")
+    time.sleep(1)
 
-# Keep it for now. We only want it to run if the user calls for it from the browser UI.
-id = reader.read_id_no_block()
+    # Keep it for now. We only want it to run if the user calls for it from the browser UI.
+    id = reader.read_id_no_block()
 
-if id:
-    print(hex(id))
-else:
-    print("No tag detected")
+    if id:
+        print(hex(id))
+    else:
+        print("No tag detected")
 
-GPIO.cleanup()
+    GPIO.cleanup()
 
-''' Task 4 '''
-# Section for the Load Cell Code
+# ''' Task 4 '''
+# # Section for the Load Cell Code
 
-EMULATE_HX711=False
+# def loadcellSetup():
+#     EMULATE_HX711 = False
 
-referenceUnit = -4872       # Reference Value of Tommy's Phone
+#     referenceUnit = -4872       # Reference Value of Tommy's Phone
 
-if not EMULATE_HX711:
-    from hx711 import HX711
-    print("Not emualated")
-else:
-    from emulated_hx711 import HX711
-    print("Emulated")
+#     if not EMULATE_HX711:
+#         from hx711 import HX711
+#         print("Not emualated")
+#     else:
+#         from emulated_hx711 import HX711
+#         print("Emulated")
 
-def cleanAndExit():
-    print("Cleaning...")
+# def cleanAndExit():
+#     print("Cleaning...")
 
-    if not EMULATE_HX711:
-        GPIO.cleanup()
+#     if not EMULATE_HX711:
+#         GPIO.cleanup()
 
-    print("Bye!")
-    sys.exit()
+#     print("Bye!")
+#     sys.exit()
 
-hx = HX711(5, 6) #GPIO Pins 5 and 6
+# hx = HX711(5, 6) #GPIO Pins 5 and 6
 
-hx.set_reading_format("LSB", "MSB")
+# hx.set_reading_format("LSB", "MSB")
 
-# HOW TO CALCULATE THE REFFERENCE UNIT
-# To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
-# In this case, 92 is 1 gram because, with 1 as a reference unit I got numbers near 0 without any weight
-# and I got numbers around 184000 when I added 2kg. So, according to the rule of thirds:
-# If 2000 grams is 184000 then 1000 grams is 184000 / 2000 = 92.
-#hx.set_reference_unit(113)
-hx.set_reference_unit(referenceUnit)
+# # HOW TO CALCULATE THE REFFERENCE UNIT
+# # To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
+# # In this case, 92 is 1 gram because, with 1 as a reference unit I got numbers near 0 without any weight
+# # and I got numbers around 184000 when I added 2kg. So, according to the rule of thirds:
+# # If 2000 grams is 184000 then 1000 grams is 184000 / 2000 = 92.
+# #hx.set_reference_unit(113)
+# hx.set_reference_unit(referenceUnit)
 
-hx.reset()
+# hx.reset()
 
-hx.tare()
+# hx.tare()
 
-print("Tare done! Add weight now...")
+# print("Tare done! Add weight now...")
 
-while True:
-    try:
-        # These three lines are usefull to debug wether to use MSB or LSB in the reading formats
-        # for the first parameter of "hx.set_reading_format("LSB", "MSB")".
-        # Comment the two lines "val = hx.get_weight(5)" and "print val" and uncomment these three lines to see what it prints.
+# while True:
+#     try:
+#         # These three lines are usefull to debug wether to use MSB or LSB in the reading formats
+#         # for the first parameter of "hx.set_reading_format("LSB", "MSB")".
+#         # Comment the two lines "val = hx.get_weight(5)" and "print val" and uncomment these three lines to see what it prints.
 
-        # np_arr8_string = hx.get_np_arr8_string()
-        # binary_string = hx.get_binary_string()
-        # print binary_string + " " + np_arr8_string
+#         # np_arr8_string = hx.get_np_arr8_string()
+#         # binary_string = hx.get_binary_string()
+#         # print binary_string + " " + np_arr8_string
 
-        # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
-        val = hx.get_weight(5)
-        print(val)
+#         # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
+#         val = hx.get_weight(5)
+#         print(val)
 
-        # To get weight from both channels (if you have load cells hooked up
-        # to both channel A and B), do something like this
-        #val_A = hx.get_weight_A(5)
-        #val_B = hx.get_weight_B(5)
-        #print "A: %s  B: %s" % ( val_A, val_B )
+#         # To get weight from both channels (if you have load cells hooked up
+#         # to both channel A and B), do something like this
+#         #val_A = hx.get_weight_A(5)
+#         #val_B = hx.get_weight_B(5)
+#         #print "A: %s  B: %s" % ( val_A, val_B )
 
-        hx.power_down()
-        hx.power_up()
-        time.sleep(0.1)
+#         hx.power_down()
+#         hx.power_up()
+#         time.sleep(0.1)
 
-    except (KeyboardInterrupt, SystemExit):
-        cleanAndExit()
+#     except (KeyboardInterrupt, SystemExit):
+#         cleanAndExit()
 
