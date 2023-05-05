@@ -343,8 +343,6 @@ def loadCellOperate():
     hx.tare()
 
     print("Tare done! Add weight now...")
-
-    return hx
     
     while True:
         try:
