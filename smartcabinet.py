@@ -251,7 +251,7 @@ def servoSetup():
 
     return p
 
-def servoPortion():
+def servoOperate():
     print("Servo Code Running!")
     p = servoSetup()
 
@@ -286,7 +286,7 @@ def rfidSetup():
     print("RFID Setup Complete!")
     return reader
 
-def rfidPortion():
+def rfidOperate():
     reader = rfidSetup()
     print("Hold a tag near the reader")
     print("Reading tag in 5 second...")
