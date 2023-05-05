@@ -9,7 +9,7 @@ import RPi.GPIO as GPIO, numpy as np
 def info():
     #Prints a basic library description
     print('Software library for the SmartCabinet project.')
-"""
+
 def cameraSetup():
 
     #This is used to st up the properties of the PiCamera
@@ -163,7 +163,7 @@ def useCamera():
             print('Quitting Camera...')
             camera.stop_preview()
             break
-"""
+
 
 ''' Task 1 '''
 # Keypad part goes here. Remember to somehow get them into functions and even have properties
