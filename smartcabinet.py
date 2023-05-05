@@ -1,18 +1,10 @@
 from global_ import camera
 from fractions import Fraction
-#from tmlib import *
 from mfrc522 import SimpleMFRC522
-import random
-import math
-import spidev
-import time
-import picamera.array
-import time
-import sys
-#import cv2
-import RPi.GPIO as GPIO
-import numpy as np
-"""
+
+import random, math, spidev, time, sys, picamera.array
+import RPi.GPIO as GPIO, numpy as np
+
 def info():
     #Prints a basic library description
     print('Software library for the SmartCabinet project.')
@@ -29,8 +21,8 @@ def cameraSetup():
     print("Camera set up successfully!")
 
     # Load the model - one time only during startup
-    tm = TeachableMachineTf()
-    tm.load('/home/pi/teachablemachine-python/tflite_model/model_unquant.tflite', '/home/pi/teachablemachine-python/tflite_model/labels.txt')
+    #tm = TeachableMachineTf()
+    #tm.load('/home/pi/teachablemachine-python/tflite_model/model_unquant.tflite', '/home/pi/teachablemachine-python/tflite_model/labels.txt')
 
 def turnOnCamera():
     '''
@@ -53,18 +45,18 @@ def savePhotoToFile(img_counter, nightModeVal):
     camera.capture(img_name)
     print("{} written!".format(img_name))
 
-def predict_face():
-    # Each time you want to capture an image - Turn on camera
-    cap = cv2.VideoCapture(0)
-    # Get image
-    _, img = cap.read()
+# def predict_face():
+#     # Each time you want to capture an image - Turn on camera
+#     cap = cv2.VideoCapture(0)
+#     # Get image
+#     _, img = cap.read()
 
-    # Pass image to model, get ID of most likely person
-    res, name = tm.predict(img)
-    idx = np.argmax(res)
-    print("Name: ", name)
-    print("Res: ", res)
-    print("idx: ", idx)
+#     # Pass image to model, get ID of most likely person
+#     res, name = tm.predict(img)
+#     idx = np.argmax(res)
+#     print("Name: ", name)
+#     print("Res: ", res)
+#     print("idx: ", idx)
 
 def captureYUVArray(array_counter, nightModeVal):
     '''
@@ -155,8 +147,8 @@ def useCamera():
         if key == 'p':
             print('Taking Picture...')
             savePhotoToFile(img_val, nightModeBit)
-            print('Predicting...')
-            predict_face()
+            # print('Predicting...')
+            # predict_face()
             print('Taking YUV array...')
             captureYUVArray(img_val, nightModeBit)
             img_val += 1
@@ -170,36 +162,39 @@ def useCamera():
             print('Quitting Camera...')
             camera.stop_preview()
             break
-"""
+
 
 ''' Task 1 '''
 # Keypad part goes here. Remember to somehow get them into functions and even have properties
 # called via functions like with the picamera stuff. Also a password system. GPIO Pins are shown for the keypad
 
-R1 = 12
-R2 = 16
-R3 = 20
-R4 = 21
+def keypadGPIOSetup():
+    R1 = 12
+    R2 = 16
+    R3 = 20
+    R4 = 21
 
-C1 = 13
-C2 = 19
-C3 = 26
+    C1 = 13
+    C2 = 19
+    C3 = 26
+    return R1, R2, R3, R4, C1, C2, C3
 
 # Initialize the GPIO pins
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
+def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(R1, GPIO.OUT)
-GPIO.setup(R2, GPIO.OUT)
-GPIO.setup(R3, GPIO.OUT)
-GPIO.setup(R4, GPIO.OUT)
+    GPIO.setup(R1, GPIO.OUT)
+    GPIO.setup(R2, GPIO.OUT)
+    GPIO.setup(R3, GPIO.OUT)
+    GPIO.setup(R4, GPIO.OUT)
 
-# Make sure to configure the input pins to use the internal pull-down resistors
+    # Make sure to configure the input pins to use the internal pull-down resistors
 
-GPIO.setup(C1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(C1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # The readLine function implements the procedure discussed in the article
 # It sends out a single pulse to one of the rows of the keypad
@@ -207,7 +202,7 @@ GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 # If it detects a change, the user pressed the button that connects the given line
 # to the detected column
 
-def readLine(line, characters):
+def readLine(line, characters, C1, C2, C3):
     GPIO.output(line, GPIO.HIGH)
     if(GPIO.input(C1) == 1):
         print(characters[0])
@@ -217,16 +212,22 @@ def readLine(line, characters):
         print(characters[2])
     GPIO.output(line, GPIO.LOW)
 
-try:
-    while True:
-        # call the readLine function for each row of the keypad
-        readLine(R1, ["1","2","3"])
-        readLine(R2, ["4","5","6"])
-        readLine(R3, ["7","8","9"])
-        readLine(R4, ["*","0","#"])
-        time.sleep(0.1)
-except KeyboardInterrupt:
-    print("\nApplication stopped!")
+def keypadOperate():
+
+    # Redefine the pins if necessary by calling this function and changing the pins from there.
+    R1, R2, R3, R4, C1, C2, C3 = keypadGPIOSetup()
+    pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3)
+
+    try:
+        while True:
+            # call the readLine function for each row of the keypad
+            readLine(R1, ["1","2","3"], C1, C2, C3)
+            readLine(R2, ["4","5","6"], C1, C2, C3)
+            readLine(R3, ["7","8","9"], C1, C2, C3)
+            readLine(R4, ["*","0","#"], C1, C2, C3)
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        print("\nApplication stopped!")
 
 ''' Task 2 '''
 # Servo part starts here
@@ -287,7 +288,6 @@ EMULATE_HX711=False
 referenceUnit = -4872       # Reference Value of Tommy's Phone
 
 if not EMULATE_HX711:
-    import RPi.GPIO as GPIO
     from hx711 import HX711
     print("Not emualated")
 else:

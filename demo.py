@@ -1,6 +1,6 @@
 import smartcabinet
-import time
 
+smartcabinet.info()
 smartcabinet.cameraSetup()
 smartcabinet.turnOnCamera()
 
