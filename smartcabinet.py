@@ -5,11 +5,11 @@ from mfrc522 import SimpleMFRC522
 import random, math, spidev, time, sys, picamera.array
 import RPi.GPIO as GPIO, numpy as np
 
-"""
+
 def info():
     #Prints a basic library description
     print('Software library for the SmartCabinet project.')
-
+"""
 def cameraSetup():
 
     #This is used to st up the properties of the PiCamera
