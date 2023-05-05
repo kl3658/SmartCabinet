@@ -1,6 +1,6 @@
 import smartcabinet
 
-#smartcabinet.info()
+smartcabinet.info()
 #smartcabinet.cameraSetup()
 #smartcabinet.turnOnCamera()
 
