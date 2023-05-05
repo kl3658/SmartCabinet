@@ -317,7 +317,7 @@ def cleanAndExit(EMULATE_HX711):
 def loadCellOperate():
     EMULATE_HX711 = False
 
-    referenceUnit = -4872       # Reference Value of Tommy's Phone
+    referenceUnit = 1       # Reference Value of Tommy's Phone
 
     if not EMULATE_HX711:
         from hx711 import HX711
