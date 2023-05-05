@@ -1,6 +1,8 @@
 import smartcabinet
 
+print("Info going!")
 smartcabinet.info()
+print("Info gone!")
 #smartcabinet.cameraSetup()
 #smartcabinet.turnOnCamera()
 
@@ -8,4 +10,5 @@ smartcabinet.info()
 #smartcabinet.useCamera()
 
 # Test out the keypad
+print("Keypad coming!")
 smartcabinet.keypadOperate()
