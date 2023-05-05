@@ -289,8 +289,8 @@ def rfidSetup():
 def rfidPortion():
     reader = rfidSetup()
     print("Hold a tag near the reader")
-    print("Reading tag in 1 second...")
-    time.sleep(1)
+    print("Reading tag in 5 second...")
+    time.sleep(5)
 
     # Keep it for now. We only want it to run if the user calls for it from the browser UI.
     id = reader.read_id_no_block()
