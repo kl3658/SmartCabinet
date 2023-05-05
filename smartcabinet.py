@@ -5,6 +5,7 @@ from mfrc522 import SimpleMFRC522
 import random, math, spidev, time, sys, picamera.array
 import RPi.GPIO as GPIO, numpy as np
 
+"""
 def info():
     #Prints a basic library description
     print('Software library for the SmartCabinet project.')
@@ -162,7 +163,7 @@ def useCamera():
             print('Quitting Camera...')
             camera.stop_preview()
             break
-
+"""
 
 ''' Task 1 '''
 # Keypad part goes here. Remember to somehow get them into functions and even have properties
