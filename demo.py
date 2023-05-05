@@ -1,14 +1,15 @@
-from smartcabinet import info, keypadOperate
+#from smartcabinet import info, keypadOperate
+import smartcabinet
 
-print("Info going!")
-info()
-print("Info gone!")
-#smartcabinet.cameraSetup()
-#smartcabinet.turnOnCamera()
+#print("Info going!")
+#info()
+#print("Info gone!")
+smartcabinet.cameraSetup()
+smartcabinet.turnOnCamera()
 
 # Used to test out the identifyFace function
-#smartcabinet.useCamera()
+smartcabinet.useCamera()
 
 # Test out the keypad
-print("Keypad coming!")
-keypadOperate()
+#print("Keypad coming!")
+#eypadOperate()
