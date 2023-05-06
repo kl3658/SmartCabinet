@@ -2,9 +2,8 @@ from global_ import camera
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
-import random, math, spidev, time, sys, picamera.array
+import random, math, time, sys, picamera.array
 import RPi.GPIO as GPIO, numpy as np
-
 
 def info():
     #Prints a basic library description
@@ -21,14 +20,7 @@ def cameraSetup():
     time.sleep(2)
     print("Camera set up successfully!")
 
-    # Load the model - one time only during startup
-    #tm = TeachableMachineTf()
-    #tm.load('/home/pi/teachablemachine-python/tflite_model/model_unquant.tflite', '/home/pi/teachablemachine-python/tflite_model/labels.txt')
-
-def turnOnCamera():
-    '''
-    Turn on the camera by having us look at the preview on the main screen. May not work with VNC
-    '''
+    # Starts the camera itself
     camera.start_preview()
     time.sleep(2)
     print("Camera turned on!")
@@ -45,19 +37,6 @@ def savePhotoToFile(img_counter, nightModeVal):
         time.sleep(2)
     camera.capture(img_name)
     print("{} written!".format(img_name))
-
-# def predict_face():
-#     # Each time you want to capture an image - Turn on camera
-#     cap = cv2.VideoCapture(0)
-#     # Get image
-#     _, img = cap.read()
-
-#     # Pass image to model, get ID of most likely person
-#     res, name = tm.predict(img)
-#     idx = np.argmax(res)
-#     print("Name: ", name)
-#     print("Res: ", res)
-#     print("idx: ", idx)
 
 def captureYUVArray(array_counter, nightModeVal):
     '''
@@ -192,7 +171,6 @@ def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
     GPIO.setup(R4, GPIO.OUT)
 
     # Make sure to configure the input pins to use the internal pull-down resistors
-
     GPIO.setup(C1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -327,7 +305,6 @@ def loadCellOperate():
         print("Emulated")
 
     hx = HX711(5, 6) # GPIO Pins 5 and 6
-    
     hx.set_reading_format("MSB", "MSB")
 
     # HOW TO CALCULATE THE REFFERENCE UNIT
@@ -337,11 +314,8 @@ def loadCellOperate():
     # If 2000 grams is 184000 then 1000 grams is 184000 / 2000 = 92.
     #hx.set_reference_unit(113)
     hx.set_reference_unit(referenceUnit)
-
     hx.reset()
-
     hx.tare()
-
     print("Tare done! Add weight now...")
     
     while True:

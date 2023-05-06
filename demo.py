@@ -4,11 +4,10 @@ import smartcabinet
 print("Info going!")
 smartcabinet.info()
 print("Info gone!")
-#smartcabinet.cameraSetup()
-#smartcabinet.turnOnCamera()
+smartcabinet.cameraSetup()
 
-# Used to test out the identifyFace function
-#smartcabinet.useCamera()
+# Used to test out the camera
+smartcabinet.useCamera()
 
 # Test out the keypad
 print("Keypad coming!")
