@@ -184,7 +184,7 @@ def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
 
 def readLine(line, characters, C1, C2, C3):
     global userEntry
-    correctKey = [1, 2, 3, 4]
+    correctKey = ["1", "2", "3", "4"]
 
     GPIO.output(line, GPIO.HIGH)
     if(GPIO.input(C1) == 1):
@@ -198,6 +198,14 @@ def readLine(line, characters, C1, C2, C3):
         userEntry.append(characters[2])
     print("Key to Enter: ", correctKey)
     print("User Entry so far: ", userEntry)
+
+    if len(userEntry) == len(correctKey):
+        print("Same length")
+        if userEntry == correctKey:
+            print("unlocked")
+        else:
+            print("Wrong key! Try again")
+            
     GPIO.output(line, GPIO.LOW)
 
 def keypadOperate():
