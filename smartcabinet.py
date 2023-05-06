@@ -273,7 +273,6 @@ def servoOperate(state):
             time.sleep(0.5)
         p.stop()
         print("Servo Cleanup")
-        GPIO.cleanup()
         # while True:
         #     p.ChangeDutyCycle(5)
         #     time.sleep(0.5)
