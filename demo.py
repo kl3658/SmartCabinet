@@ -16,7 +16,7 @@ print("Keypad Gone!")
 
 # Test out the servo
 print("Servo coming!")
-smartcabinet.servoOperate()
+smartcabinet.servoOperate("Open")
 print("Servo gone!")
 
 # Test out the RFID

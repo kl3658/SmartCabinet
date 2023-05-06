@@ -272,6 +272,7 @@ def servoOperate(state):
             lockCabinet(p)
             time.sleep(0.5)
         p.stop()
+        print("Servo Cleanup")
         GPIO.cleanup()
         # while True:
         #     p.ChangeDutyCycle(5)
