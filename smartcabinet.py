@@ -247,6 +247,9 @@ def servoSetup():
     p = GPIO.PWM(servoPIN, 50)      # GPIO 18 for PWM with 50Hz
     p.start(2.5)                    # Initialization
 
+    print("Does this work?")
+    time.sleep(2)
+
     print("Servo setup complete!")
 
     return p
