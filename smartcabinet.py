@@ -1,4 +1,4 @@
-from global_ import camera
+from global_ import camera, userEntry
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
@@ -183,8 +183,9 @@ def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
 # to the detected column
 
 def readLine(line, characters, C1, C2, C3):
+    global userEntry
     correctKey = [1, 2, 3, 4]
-    userEntry = []
+
     GPIO.output(line, GPIO.HIGH)
     if(GPIO.input(C1) == 1):
         print(characters[0])
