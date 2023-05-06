@@ -217,17 +217,17 @@ def keypadOperate():
     print("back to keypadOperate")
 
     try:
-        #while True:
-        # call the readLine function for each row of the keypad
-        if (GPIO.input(R1) == 1):
-            readLine(R1, ["1","2","3"], C1, C2, C3)
-        elif (GPIO.input(R2) == 1):
-            readLine(R2, ["4","5","6"], C1, C2, C3)
-        elif (GPIO.input(R3) == 1):
-            readLine(R3, ["7","8","9"], C1, C2, C3)
-        elif (GPIO.input(R4) == 1):
-            readLine(R4, ["*","0","#"], C1, C2, C3)
-        time.sleep(0.1)
+        while True:
+            # call the readLine function for each row of the keypad
+            if (GPIO.input(R1) == 1):
+                readLine(R1, ["1","2","3"], C1, C2, C3)
+            elif (GPIO.input(R2) == 1):
+                readLine(R2, ["4","5","6"], C1, C2, C3)
+            elif (GPIO.input(R3) == 1):
+                readLine(R3, ["7","8","9"], C1, C2, C3)
+            elif (GPIO.input(R4) == 1):
+                readLine(R4, ["*","0","#"], C1, C2, C3)
+            time.sleep(0.1)
     except KeyboardInterrupt:
         print("\nApplication stopped!")
 
