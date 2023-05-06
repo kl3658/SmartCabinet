@@ -207,6 +207,10 @@ def readLine(line, characters, C1, C2, C3):
             print("Unlocked")
         else:
             print("Wrong key! Try again")
+        userEntry.clear()
+    elif len(userEntry) >= len(correctKey):
+        print("Bigger Length. Not Fair!")
+        userEntry.clear()
             
     GPIO.output(line, GPIO.LOW)
 
