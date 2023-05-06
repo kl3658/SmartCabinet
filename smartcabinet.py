@@ -205,8 +205,10 @@ def readLine(line, characters, C1, C2, C3):
         print("Same length")
         if userEntry == correctKey:
             print("Unlocked")
+            servoOperate("Open")
         else:
             print("Wrong key! Try again")
+            servoOperate("Close")
         userEntry.clear()
     elif len(userEntry) >= len(correctKey):
         print("Bigger Length. Not Fair!")
@@ -250,28 +252,42 @@ def servoSetup():
 
     return p
 
-def servoOperate():
+def lockCabinet(p):
+    p.ChangeDutyCycle(2.5)
+
+def unlockCabinet(p):
+    p.ChangeDutyCycle(12.5)
+
+def servoOperate(state):
     print("Servo Code Running!")
     p = servoSetup()
 
     try:
-        while True:
-            p.ChangeDutyCycle(5)
+        if state == "Open":
+            unlockCabinet(p)
             time.sleep(0.5)
-            p.ChangeDutyCycle(7.5)
+        elif state == "Close":
+            lockCabinet(p)
             time.sleep(0.5)
-            p.ChangeDutyCycle(10)
-            time.sleep(0.5)
-            p.ChangeDutyCycle(12.5)
-            time.sleep(0.5)
-            p.ChangeDutyCycle(10)
-            time.sleep(0.5)
-            p.ChangeDutyCycle(7.5)
-            time.sleep(0.5)
-            p.ChangeDutyCycle(5)
-            time.sleep(0.5)
-            p.ChangeDutyCycle(2.5)
-            time.sleep(0.5)
+        p.stop()
+        GPIO.cleanup()
+        # while True:
+        #     p.ChangeDutyCycle(5)
+        #     time.sleep(0.5)
+        #     p.ChangeDutyCycle(7.5)
+        #     time.sleep(0.5)
+        #     p.ChangeDutyCycle(10)
+        #     time.sleep(0.5)
+        #     p.ChangeDutyCycle(12.5)
+        #     time.sleep(0.5)
+        #     p.ChangeDutyCycle(10)
+        #     time.sleep(0.5)
+        #     p.ChangeDutyCycle(7.5)
+        #     time.sleep(0.5)
+        #     p.ChangeDutyCycle(5)
+        #     time.sleep(0.5)
+        #     p.ChangeDutyCycle(2.5)
+        #     time.sleep(0.5)
     except KeyboardInterrupt:
         p.stop()
         GPIO.cleanup()
