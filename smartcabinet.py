@@ -11,32 +11,33 @@ def info():
 
 def cameraSetup():
 
-    #This is used to st up the properties of the PiCamera
-    #Settings can be changed through editing the fucntions themselves
-    camera.resolution = (640, 480)
-    camera.framerate = 24
-    camera.iso = 400
-    camera.vflip = True             # Camera is upside down, so get it rightside-up
-    time.sleep(2)
-    print("Camera set up successfully!")
+    # This is used to st up the properties of the PiCamera
+    # Settings can be changed through editing the fucntions themselves
+    # camera.resolution = (640, 480)
+    # camera.framerate = 24
+    # camera.iso = 400
+    # camera.vflip = True             # Camera is upside down, so get it rightside-up
+    # time.sleep(2)
+    # print("Camera set up successfully!")
 
     # Starts the camera itself
-    camera.start_preview()
-    time.sleep(2)
+    # camera.start_preview()
+    # time.sleep(2)
     print("Camera turned on!")
 
 def savePhotoToFile(img_counter, nightModeVal):
     '''
     Simply saves an image to somewhere on the Raspberry Pi. The directory can be altered.
     '''
-    img_name = "/home/pi/Pictures/image{}.jpg".format(img_counter)
-    # Allow some time to take an image. If night mode is set, this should take 30 seconds
-    if nightModeVal == 1:
-        time.sleep(30)
-    else:
-        time.sleep(2)
-    camera.capture(img_name)
-    print("{} written!".format(img_name))
+    # img_name = "/home/pi/Pictures/image{}.jpg".format(img_counter)
+    # # Allow some time to take an image. If night mode is set, this should take 30 seconds
+    # if nightModeVal == 1:
+    #     time.sleep(30)
+    # else:
+    #     time.sleep(2)
+    # camera.capture(img_name)
+    # print("{} written!".format(img_name))
+    print("Photo Taken")
 
 def captureYUVArray(array_counter, nightModeVal):
     '''
@@ -127,8 +128,6 @@ def useCamera():
         if key == 'p':
             print('Taking Picture...')
             savePhotoToFile(img_val, nightModeBit)
-            # print('Predicting...')
-            # predict_face()
             print('Taking YUV array...')
             captureYUVArray(img_val, nightModeBit)
             img_val += 1
@@ -140,7 +139,7 @@ def useCamera():
             setFramerateofCamera()
         if key == 'q':
             print('Quitting Camera...')
-            camera.stop_preview()
+            #camera.stop_preview()
             break
 
 
@@ -184,13 +183,20 @@ def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
 # to the detected column
 
 def readLine(line, characters, C1, C2, C3):
+    correctKey = [1, 2, 3, 4]
+    userEntry = []
     GPIO.output(line, GPIO.HIGH)
     if(GPIO.input(C1) == 1):
         print(characters[0])
+        userEntry.append(characters[0])
     if(GPIO.input(C2) == 1):
         print(characters[1])
+        userEntry.append(characters[1])
     if(GPIO.input(C3) == 1):
         print(characters[2])
+        userEntry.append(characters[2])
+    print("Key to Enter: ", correctKey)
+    print("User Entry so far: ", userEntry)
     GPIO.output(line, GPIO.LOW)
 
 def keypadOperate():
@@ -208,7 +214,7 @@ def keypadOperate():
             readLine(R2, ["4","5","6"], C1, C2, C3)
             readLine(R3, ["7","8","9"], C1, C2, C3)
             readLine(R4, ["*","0","#"], C1, C2, C3)
-            time.sleep(0.1)
+            time.sleep(0.5)
     except KeyboardInterrupt:
         print("\nApplication stopped!")
 
