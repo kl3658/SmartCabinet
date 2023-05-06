@@ -199,6 +199,7 @@ def readLine(line, characters, C1, C2, C3):
         print(characters[2])
         userEntry.append(characters[2])
         print("User Entry so far: ", userEntry)
+    GPIO.output(line, GPIO.LOW)
 
     if len(userEntry) == len(correctKey):
         print("Correct key: ", correctKey)
@@ -213,8 +214,6 @@ def readLine(line, characters, C1, C2, C3):
     elif len(userEntry) >= len(correctKey):
         print("Bigger Length. Not Fair!")
         userEntry.clear()
-            
-    GPIO.output(line, GPIO.LOW)
 
 def keypadOperate():
     print("keypadOperate running!")
