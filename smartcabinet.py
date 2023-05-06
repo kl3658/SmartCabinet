@@ -190,19 +190,21 @@ def readLine(line, characters, C1, C2, C3):
     if(GPIO.input(C1) == 1):
         print(characters[0])
         userEntry.append(characters[0])
+        print("User Entry so far: ", userEntry)
     if(GPIO.input(C2) == 1):
         print(characters[1])
         userEntry.append(characters[1])
+        print("User Entry so far: ", userEntry)
     if(GPIO.input(C3) == 1):
         print(characters[2])
         userEntry.append(characters[2])
-    print("Key to Enter: ", correctKey)
-    print("User Entry so far: ", userEntry)
+        print("User Entry so far: ", userEntry)
 
     if len(userEntry) == len(correctKey):
+        print("Correct key: ", correctKey)
         print("Same length")
         if userEntry == correctKey:
-            print("unlocked")
+            print("Unlocked")
         else:
             print("Wrong key! Try again")
             
@@ -223,7 +225,7 @@ def keypadOperate():
             readLine(R2, ["4","5","6"], C1, C2, C3)
             readLine(R3, ["7","8","9"], C1, C2, C3)
             readLine(R4, ["*","0","#"], C1, C2, C3)
-            time.sleep(0.1)
+            time.sleep(0.2)
     except KeyboardInterrupt:
         print("\nApplication stopped!")
 
