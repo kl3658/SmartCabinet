@@ -318,6 +318,7 @@ def rfidOperate():
                 print(hex(id))
             else:
                 print("No tag detected")
+            time.sleep(3)
     except KeyboardInterrupt:
         GPIO.cleanup()
 
