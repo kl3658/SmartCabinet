@@ -306,18 +306,20 @@ def rfidSetup():
 def rfidOperate():
     reader = rfidSetup()
     print("Hold a tag near the reader")
-    print("Reading tag in 5 second...")
-    time.sleep(5)
+    print("Reading tag in 3 second...")
+    time.sleep(3)
 
     # Keep it for now. We only want it to run if the user calls for it from the browser UI.
     id = reader.read_id_no_block()
-
-    if id:
-        print(hex(id))
-    else:
-        print("No tag detected")
-
-    GPIO.cleanup()
+    
+    try:
+        while True:
+            if id:
+                print(hex(id))
+            else:
+                print("No tag detected")
+    except KeyboardInterrupt:
+        GPIO.cleanup()
 
 ''' Task 4 '''
 # Section for the Load Cell Code
