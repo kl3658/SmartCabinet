@@ -176,13 +176,13 @@ def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
 
     print("Setup complete")
 
-# The readLine function implements the procedure discussed in the article
+# The readKeypadLine function implements the procedure discussed in the article
 # It sends out a single pulse to one of the rows of the keypad
 # and then checks each column for changes
 # If it detects a change, the user pressed the button that connects the given line
 # to the detected column
 
-def readLine(line, characters, C1, C2, C3):
+def readKeypadLine(line, characters, C1, C2, C3):
     global userEntry
     correctKey = ["1", "2", "3", "4"]
 
@@ -225,11 +225,11 @@ def keypadOperate():
 
     try:
         while True:
-            # call the readLine function for each row of the keypad
-            readLine(R1, ["1","2","3"], C1, C2, C3)
-            readLine(R2, ["4","5","6"], C1, C2, C3)
-            readLine(R3, ["7","8","9"], C1, C2, C3)
-            readLine(R4, ["*","0","#"], C1, C2, C3)
+            # call the readKeypadLine function for each row of the keypad
+            readKeypadLine(R1, ["1","2","3"], C1, C2, C3)
+            readKeypadLine(R2, ["4","5","6"], C1, C2, C3)
+            readKeypadLine(R3, ["7","8","9"], C1, C2, C3)
+            readKeypadLine(R4, ["*","0","#"], C1, C2, C3)
             time.sleep(0.2)
     except KeyboardInterrupt:
         print("\nApplication stopped!")
@@ -272,24 +272,7 @@ def servoOperate(state):
             lockCabinet(p)
             time.sleep(0.5)
         p.stop()
-        print("Servo Cleanup")
-        # while True:
-        #     p.ChangeDutyCycle(5)
-        #     time.sleep(0.5)
-        #     p.ChangeDutyCycle(7.5)
-        #     time.sleep(0.5)
-        #     p.ChangeDutyCycle(10)
-        #     time.sleep(0.5)
-        #     p.ChangeDutyCycle(12.5)
-        #     time.sleep(0.5)
-        #     p.ChangeDutyCycle(10)
-        #     time.sleep(0.5)
-        #     p.ChangeDutyCycle(7.5)
-        #     time.sleep(0.5)
-        #     p.ChangeDutyCycle(5)
-        #     time.sleep(0.5)
-        #     p.ChangeDutyCycle(2.5)
-        #     time.sleep(0.5)
+        print("Returning to previous function")
     except KeyboardInterrupt:
         p.stop()
         GPIO.cleanup()
