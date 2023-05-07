@@ -317,6 +317,9 @@ def rfidOperate():
             id = reader.read_id_no_block()
             if id:
                 print(hex(id))
+                servoOperate("Open")
+                time.sleep(5)
+                servoOperate("Close")
             else:
                 print("No tag detected")
             time.sleep(3)
