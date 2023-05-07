@@ -314,6 +314,7 @@ def rfidOperate():
     
     try:
         while True:
+            id = reader.read_id_no_block()
             if id:
                 print(hex(id))
             else:
