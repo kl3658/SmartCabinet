@@ -201,6 +201,7 @@ def readKeypadLine(line, characters, C1, C2, C3):
         print("User Entry so far: ", userEntry)
     GPIO.output(line, GPIO.LOW)
 
+    # When 4 or more keys are entered, we take an appropriate action if it matches.
     if len(userEntry) == len(correctKey):
         print("Correct key: ", correctKey)
         print("Same length")
@@ -212,7 +213,6 @@ def readKeypadLine(line, characters, C1, C2, C3):
             servoOperate("Close")
         userEntry.clear()
     elif len(userEntry) >= len(correctKey):
-        print("Bigger Length. Not Fair!")
         userEntry.clear()
 
 def keypadOperate():
@@ -230,7 +230,7 @@ def keypadOperate():
             readKeypadLine(R2, ["4","5","6"], C1, C2, C3)
             readKeypadLine(R3, ["7","8","9"], C1, C2, C3)
             readKeypadLine(R4, ["*","0","#"], C1, C2, C3)
-            time.sleep(0.2)
+            time.sleep(0.15)
     except KeyboardInterrupt:
         print("\nApplication stopped!")
 
