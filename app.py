@@ -9,19 +9,19 @@ app = Flask(__name__, static_folder='assets')
 # Default Path
 @app.route("/")
 def start():
-    return redirect("/start")
+    return redirect("/templates/start")
 
-@app.route("/start")
+@app.route("/templates/start")
 def start_template():
     return render_template("start.html")
 
-@app.route("/selection")
+@app.route("/templates/selection")
 def selection_template():
     return render_template("selection.html")
 
 # Tap Mode page has two buttons, both for changing the 
 # RFID tapping capabilities
-@app.route("/tapmode")
+@app.route("/templates/tapmode")
 def tapmode_template():
     on = ""
     off = ""
@@ -33,7 +33,7 @@ def tapmode_template():
         off = "disabled"
     return render_template("tapmode.html", rfid_state = rfid_mode, ondisabled = on, offdisabled = off)
 
-@app.route("/rfidtag/<int:action>")
+@app.route("/templates/rfidtag/<int:action>")
 def rfid_action(action):
     global rfid_mode
     # Enables RFID
@@ -44,11 +44,11 @@ def rfid_action(action):
     elif action == 0:
         rfid_mode = "OFF"
         print("Turning RFID off")
-    return redirect("/tapmode")
+    return redirect("/templates/tapmode")
 
 # Keypad page just has one button, so we can simply 
 # request the form and change the keypad code from here.
-@app.route("/keypadmode", methods=['POST', 'GET'])
+@app.route("/templates/keypadmode", methods=['POST', 'GET'])
 def keypadmode_template():
     keypad_code = "No Passcode Yet"
     if request.method=="POST":
@@ -56,7 +56,7 @@ def keypadmode_template():
     return render_template("keypadmode.html", passcode_entered = keypad_code)
 
 # Unlock page has two buttons in the website
-@app.route("/unlockedmode")
+@app.route("/templates/unlockedmode")
 def unlockedmode_template():
     on = ""
     off = ""
@@ -68,7 +68,7 @@ def unlockedmode_template():
         off = "disabled"
     return render_template("unlockedmode.html", box_lock_state = box_mode, ondisabled = on, offdisabled = off)
 
-@app.route("/boxlock/<int:action>")
+@app.route("/templates/boxlock/<int:action>")
 def boxlock_action(action):
     global box_mode
     # Unlocks the box
@@ -79,11 +79,11 @@ def boxlock_action(action):
     elif action == 0:
         box_mode = "OFF"
         print("Box locked!")
-    return redirect("/unlockedmode")
+    return redirect("/templates/unlockedmode")
 
 # Various options, with the ability to disable 
 # someone out and checking the weight of the box.
-@app.route("/options", methods=['POST', 'GET'])
+@app.route("/templates/options", methods=['POST', 'GET'])
 def options_template():
     #current_weight = smartcabinet.loadCellWeightMeasure()
     current_weight = random.randint(1, 20)
