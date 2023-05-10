@@ -96,4 +96,4 @@ def options_template():
     return render_template("options.html", weight_value = "", warning_message = warn_msg, hist = d)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=80, debug=True, threaded=True)

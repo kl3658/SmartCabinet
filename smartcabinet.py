@@ -2,7 +2,7 @@ from global_ import camera, userEntry
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
-import random, math, time, sys, picamera.array
+import random, math, time, sys
 import RPi.GPIO as GPIO, numpy as np
 
 def info():
@@ -38,24 +38,6 @@ def savePhotoToFile(img_counter, nightModeVal):
     # camera.capture(img_name)
     # print("{} written!".format(img_name))
     print("Photo Taken")
-
-def captureYUVArray(array_counter, nightModeVal):
-    '''
-    Similar to savePhotoToFile, except it captures a YUV image and array instead.
-    '''
-    with picamera.array.PiYUVArray(camera) as output:
-        array_name = "/home/pi/Pictures/YUVarray{}.jpg".format(array_counter)
-        # Allow some time to take an image. If night mode is set, this should take 30 seconds
-        if nightModeVal == 1:
-            time.sleep(30)
-        else:
-            time.sleep(2)
-        camera.capture(array_name, 'yuv')
-        print("{} written!".format(output))
-        # Show size of YUV data
-        print('Array Shape: ', output.array.shape)
-        # Show size of RGB converted data
-        print('RGB Array Shape: ', output.rgb_array.shape)
 
 def flipVerticalOrient():
     camera.vflip = not camera.vflip
@@ -128,8 +110,6 @@ def useCamera():
         if key == 'p':
             print('Taking Picture...')
             savePhotoToFile(img_val, nightModeBit)
-            print('Taking YUV array...')
-            captureYUVArray(img_val, nightModeBit)
             img_val += 1
         if key == 'n':
             print('Night Mode Activate...')
