@@ -12,7 +12,33 @@
     <div class="col-md-12">
         <h1 class="text-center" style="margin-top: 30px;margin-bottom: 30px;">Other Options for SmartCabinet</h1>
     </div>
-    <div class="row"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Current Weight:&nbsp;</h1><p>{{ weight_value }} g<br /><br />{{ warning_message }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"><div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>X</th>
+                <th>Y</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{% for d in hist %}}
+            <tr>
+                <td>{{ d['x'] }}</td>
+                <td>{{ d['y'] }}</td>
+            </tr>
+        {{% endfor %}}
+        </tbody>
+    </table>
+</div></div>
+        </div>
+    </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

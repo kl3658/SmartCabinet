@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-import smartcabinet
+import smartcabinet, random
 
 global rfid_mode, box_mode
 rfid_mode = "Unknown"
@@ -19,7 +19,8 @@ def start_template():
 def selection_template():
     return render_template("selection.html")
 
-# Has two buttons, both for changing the RFID tapping capabilities
+# Tap Mode page has two buttons, both for changing the 
+# RFID tapping capabilities
 @app.route("/tapmode")
 def tapmode_template():
     on = ""
@@ -45,7 +46,8 @@ def rfid_action(action):
         print("Turning RFID off")
     return redirect("/tapmode")
 
-# Just one button, so we can simply request the form and change the keypad code from here.
+# Keypad page just has one button, so we can simply 
+# request the form and change the keypad code from here.
 @app.route("/keypadmode", methods=['POST', 'GET'])
 def keypadmode_template():
     keypad_code = "No Passcode Yet"
@@ -53,7 +55,7 @@ def keypadmode_template():
         keypad_code = request.form['virtual_keypad_input']
     return render_template("keypadmode.html", passcode_entered = keypad_code)
 
-# Has two buttons in the website
+# Unlock page has two buttons in the website
 @app.route("/unlockedmode")
 def unlockedmode_template():
     on = ""
@@ -79,11 +81,19 @@ def boxlock_action(action):
         print("Box locked!")
     return redirect("/unlockedmode")
 
-# Various options, with the ability to disable someone out and checking the weight
-# of the box in question.
+# Various options, with the ability to disable 
+# someone out and checking the weight of the box.
 @app.route("/options", methods=['POST', 'GET'])
 def options_template():
-    return render_template("options.html")
+    #current_weight = smartcabinet.loadCellWeightMeasure()
+    current_weight = random.randint(1, 20)
+    if current_weight < 5:
+        warn_msg = "WARNING!"
+    else:
+        warn_msg = ""
+    
+    d = [{'x': random.randint(1, 5), 'y': random.randint(6,9)}, {'x': random.randint(10, 14), 'y': random.randint(15,20)}]
+    return render_template("options.html", weight_value = "", warning_message = warn_msg, hist = d)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
