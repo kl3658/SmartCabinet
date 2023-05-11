@@ -1,72 +1,76 @@
-from global_ import camera, userEntry
+from global_ import userEntry, img_val
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
-import random, math, time, sys
-import RPi.GPIO as GPIO, numpy as np
+import random, math, time, sys, picamera
+import RPi.GPIO as GPIO
 
 def info():
     #Prints a basic library description
     print('Software library for the SmartCabinet project.')
 
-def cameraSetup():
-
-    # This is used to st up the properties of the PiCamera
-    # Settings can be changed through editing the fucntions themselves
-    # camera.resolution = (640, 480)
-    # camera.framerate = 24
-    # camera.iso = 400
-    # camera.vflip = True             # Camera is upside down, so get it rightside-up
-    # time.sleep(2)
-    # print("Camera set up successfully!")
+def cameraSetup(camera):
+    '''
+    This is used to st up the properties of the PiCamera
+    Settings can be changed through editing the fucntions themselves
+    '''
+    camera.resolution = (640, 480)
+    camera.framerate = 24
+    camera.iso = 400
+    camera.vflip = True             # Camera is upside down, so get it rightside-up
+    time.sleep(2)
+    print("Camera set up successfully!")
 
     # Starts the camera itself
-    # camera.start_preview()
-    # time.sleep(2)
+    camera.start_preview()
+    time.sleep(2)
     print("Camera turned on!")
+    return camera
 
-def savePhotoToFile(img_counter, nightModeVal):
+def savePhotoToFile(img_counter, nightModeVal, camera):
     '''
     Simply saves an image to somewhere on the Raspberry Pi. The directory can be altered.
     '''
-    # img_name = "/home/pi/Pictures/image{}.jpg".format(img_counter)
-    # # Allow some time to take an image. If night mode is set, this should take 30 seconds
-    # if nightModeVal == 1:
-    #     time.sleep(30)
-    # else:
-    #     time.sleep(2)
-    # camera.capture(img_name)
-    # print("{} written!".format(img_name))
+    img_name = "/home/pi/Pictures/image{}.jpg".format(img_counter)
+    # Allow some time to take an image. If night mode is set, this should take 30 seconds
+    if nightModeVal == 1:
+        time.sleep(30)
+    else:
+        time.sleep(2)
+    camera.capture(img_name)
+    print("{} written!".format(img_name))
     print("Photo Taken")
+    return camera
 
-def flipVerticalOrient():
+def flipVerticalOrient(camera):
     camera.vflip = not camera.vflip
+    return camera
 
-def setISOofCamera():
+def setISOofCamera(camera):
     while True:
         try:
             isovalue = int(input('Enter an ISO value between 0 and 1600. 0 will set it to AUTO:'))
             if (isovalue < 0) or (isovalue > 1600):
                 raise ValueError
             camera.iso = isovalue
-            break
+            return camera
         except ValueError:
             print('Integers only please! If you did enter an integer, it was an illegal value!')
             continue
 
-def setFramerateofCamera():
+def setFramerateofCamera(camera):
     while True:
         try:
             framerateVal = int(input('Enter an framerate value:'))
             if (framerateVal < 0) or (framerateVal > 60):
                 raise ValueError
             camera.framerate = framerateVal
-            break
+            return camera
         except ValueError:
             print('Integers only please! If you did enter an integer, it was an illegal value!')
             continue
 
-def nightModeSet(nightModeVal):
+def nightModeSet(nightModeVal, camera):
     '''
     Asks to set night mode or not. Predetermined settings for night mode shown below.
 
@@ -86,7 +90,7 @@ def nightModeSet(nightModeVal):
                 camera.framerate = 30
                 camera.shutter_speed = 0            # Automatic at 0
                 camera.iso = 800
-            return nightModeVal
+            return nightModeVal, camera
         except ValueError:
             print('Integers only please! If you did enter an integer, it was an illegal value!')
             continue
@@ -96,32 +100,38 @@ def useCamera():
     While the camera is turned on, we can perform various properties, such as taking pictures and even
     being to change its properties on the fly.
     '''
-    img_val = 1
+    global img_val
     nightModeBit = 0
     time.sleep(2)
+
+    # Commented out as Pi Camera doesn't function for us
+    # if camera:
+    #     break
+    # else:
+    #     camera = picamera.PiCamera()
+    # cameraSetup(camera)
     while True:
         key = input('Press key, then hit Enter. Enter p to snap a photo. Enter q to exit: ')
         if key == 'f':
             print('Flipping Vertical Orientation...')
-            flipVerticalOrient()
+            # camera = flipVerticalOrient(camera)
         if key == 'i':
             print('Changing ISO of the Camera...')
-            setISOofCamera()
+            # camera = setISOofCamera(camera)
         if key == 'p':
             print('Taking Picture...')
-            savePhotoToFile(img_val, nightModeBit)
+            # camera = savePhotoToFile(img_val, nightModeBit, camera)
             img_val += 1
         if key == 'n':
             print('Night Mode Activate...')
-            nightModeBit = nightModeSet(nightModeBit)
+            # nightModeBit, camera = nightModeSet(nightModeBit, camera)
         if key == 'r':
             print('Setting framerate...')
-            setFramerateofCamera()
+            # camera = setFramerateofCamera()
         if key == 'q':
             print('Quitting Camera...')
             #camera.stop_preview()
             break
-    camera.stop_preview()
 
 
 ''' Task 1 '''

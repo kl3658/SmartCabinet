@@ -1,3 +1,2 @@
-import picamera
-camera = picamera.PiCamera()
+img_val = 1
 userEntry = []
