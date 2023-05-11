@@ -93,7 +93,7 @@ def options_template():
         warn_msg = ""
     
     d = [{'x': random.randint(1, 5), 'y': random.randint(6,9)}, {'x': random.randint(10, 14), 'y': random.randint(15,20)}]
-    return render_template("options.html", weight_value = "", warning_message = warn_msg, hist = d)
+    return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = d)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
