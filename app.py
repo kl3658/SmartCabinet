@@ -1,6 +1,10 @@
 from flask import Flask, render_template, redirect, request
 import random, smartcabinet
 
+# TODO: Make sure to call the SmartCabinet functions
+# in this file to streamline the process, and get to threads
+# quickly
+
 global rfid_mode, box_mode
 rfid_mode = "Unknown"
 box_mode = "Unknown"

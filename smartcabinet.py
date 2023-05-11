@@ -74,7 +74,7 @@ def nightModeSet(nightModeVal, camera):
     '''
     Asks to set night mode or not. Predetermined settings for night mode shown below.
 
-    Adapted from:
+    Adapted and restructured from:
     https://picamera.readthedocs.io/en/release-1.13/recipes1.html#capturing-in-low-light
     '''
     while True:
