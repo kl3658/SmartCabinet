@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-import random
+import random, smartcabinet
 
 global rfid_mode, box_mode
 rfid_mode = "Unknown"
