@@ -1,10 +1,8 @@
-#from smartcabinet import info, keypadOperate
 import smartcabinet
 
 print("Info going!")
 smartcabinet.info()
 print("Info gone!")
-smartcabinet.cameraSetup()
 
 # Used to test out the camera
 smartcabinet.useCamera()
