@@ -121,6 +121,7 @@ def useCamera():
             print('Quitting Camera...')
             #camera.stop_preview()
             break
+    camera.stop_preview()
 
 
 ''' Task 1 '''
