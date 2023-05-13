@@ -11,7 +11,7 @@ def info():
 
 def cameraSetup(camera):
     '''
-    This is used to st up the properties of the PiCamera
+    This is used to set up the properties of the PiCamera
     Settings can be changed through editing the fucntions themselves
     '''
     camera.resolution = (640, 480)
@@ -95,10 +95,13 @@ def nightModeSet(nightModeVal, camera):
             print('Integers only please! If you did enter an integer, it was an illegal value!')
             continue
 
-def useCamera():
+def useCamera(thisFunctionCall = True):
     '''
     While the camera is turned on, we can perform various properties, such as taking pictures and even
     being to change its properties on the fly.
+
+    otherFunctionCall will be used to see if other functions call this function.
+    Default value of False
     '''
     global img_val
     nightModeBit = 0
@@ -111,6 +114,12 @@ def useCamera():
     #     camera = picamera.PiCamera()
     # cameraSetup(camera)
     while True:
+        if thisFunctionCall == False:
+            print("Taking picture, then returning to previous function...")
+            # camera = savePhotoToFile(img_val, nightModeBit, camera)
+            img_val += 1
+            # camera.close()
+            return
         key = input('Press key, then hit Enter. Enter p to snap a photo. Enter q to exit: ')
         if key == 'f':
             print('Flipping Vertical Orientation...')
@@ -127,18 +136,20 @@ def useCamera():
             # nightModeBit, camera = nightModeSet(nightModeBit, camera)
         if key == 'r':
             print('Setting framerate...')
-            # camera = setFramerateofCamera()
+            # camera = setFramerateofCamera(camera)
         if key == 'q':
             print('Quitting Camera...')
-            #camera.stop_preview()
+            # camera.stop_preview()
+            # camera.close()
             break
 
 
-''' Task 1 '''
-# Keypad part goes here. Remember to somehow get them into functions and even have properties
-# called via functions like with the picamera stuff. Also a password system. GPIO Pins are shown for the keypad
+''' Keypad Portion '''
 
 def keypadGPIOSetup():
+    '''
+    GPIO Pins are shown for the keypad
+    '''
     R1 = 12
     R2 = 16
     R3 = 20
@@ -149,9 +160,10 @@ def keypadGPIOSetup():
     C3 = 26
     return R1, R2, R3, R4, C1, C2, C3
 
-# Initialize the GPIO pins
-
 def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
+    '''
+    Setup the GPIO pins and properties here
+    '''
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
 
@@ -167,13 +179,16 @@ def pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3):
 
     print("Setup complete")
 
-# The readKeypadLine function implements the procedure discussed in the article
-# It sends out a single pulse to one of the rows of the keypad
-# and then checks each column for changes
-# If it detects a change, the user pressed the button that connects the given line
-# to the detected column
-
 def readKeypadLine(line, characters, C1, C2, C3):
+    '''
+    The readKeypadLine function implements the procedure discussed in the article
+    It sends out a single pulse to one of the rows of the keypad
+    and then checks each column for changes.
+    If it detects a change, the user pressed the button that connects the given line
+    to the detected column
+
+    Article: https://www.digikey.com/en/maker/blogs/2021/how-to-connect-a-keypad-to-a-raspberry-pi
+    '''
     global userEntry
     correctKey = ["1", "2", "3", "4"]
 
@@ -198,15 +213,18 @@ def readKeypadLine(line, characters, C1, C2, C3):
         print("Same length")
         if userEntry == correctKey:
             print("Unlocked")
-            servoOperate("Open")
+            servoOperate(1)
         else:
             print("Wrong key! Try again")
-            servoOperate("Close")
+            servoOperate(0)
         userEntry.clear()
     elif len(userEntry) >= len(correctKey):
         userEntry.clear()
 
 def keypadOperate():
+    '''
+    Reads the inputs of the keypad and determines if the manager can access the site
+    '''
     print("keypadOperate running!")
     # Redefine the pins if necessary by calling this function and changing the pins from there.
     R1, R2, R3, R4, C1, C2, C3 = keypadGPIOSetup()
@@ -225,10 +243,12 @@ def keypadOperate():
     except KeyboardInterrupt:
         print("\nApplication stopped!")
 
-''' Task 2 '''
-# Servo part starts here
+''' Servo Portion '''
 
 def servoSetup():
+    '''
+    Sets up the servo, before returning to the previous function.
+    '''
     print("Setting up servo!")
     GPIO.setwarnings(False)
     servoPIN = 18
@@ -246,20 +266,32 @@ def servoSetup():
     return p
 
 def lockCabinet(p):
+    '''
+    Locks the cabinet
+    '''
     p.ChangeDutyCycle(2.5)
 
 def unlockCabinet(p):
+    '''
+    Locks the cabinet
+    '''
     p.ChangeDutyCycle(12.5)
 
 def servoOperate(state):
+    '''
+    Opeartes the servo, runs once.
+
+    Adapted and restructured from:
+    https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/
+    '''
     print("Servo Code Running!")
     p = servoSetup()
 
     try:
-        if state == "Open":
+        if state == 1:
             unlockCabinet(p)
             time.sleep(0.5)
-        elif state == "Close":
+        elif state == 0:
             lockCabinet(p)
             time.sleep(0.5)
         p.stop()
@@ -268,16 +300,21 @@ def servoOperate(state):
         p.stop()
         GPIO.cleanup()
 
-''' Task 3 '''
-# RFID Part Code Starts Here
+''' RFID Portion '''
 
 def rfidSetup():
+    '''
+    Sets up the RFID chip
+    '''
     print("Setting up RFID")
     reader = SimpleMFRC522()
     print("RFID Setup Complete!")
     return reader
 
 def rfidOperate():
+    '''
+    Reads the RFID chip and cards
+    '''
     reader = rfidSetup()
     print("Hold a tag near the reader")
     print("Reading tag in 3 second...")
@@ -291,9 +328,9 @@ def rfidOperate():
             id = reader.read_id_no_block()
             if id:
                 print(hex(id))
-                servoOperate("Open")
+                servoOperate(1)
                 time.sleep(5)
-                servoOperate("Close")
+                servoOperate(0)
             else:
                 print("No tag detected")
             time.sleep(3)
@@ -313,6 +350,9 @@ def cleanAndExit(EMULATE_HX711):
     sys.exit()
 
 def loadCellWeightMeasure(hx):
+    '''
+    We continuously measure the weight of the object above us.
+    '''
     # These three lines are usefull to debug wether to use MSB or LSB in the reading formats
     # for the first parameter of "hx.set_reading_format("LSB", "MSB")".
     # Comment the two lines "val = hx.get_weight(5)" and "print val" and uncomment these three lines to see what it prints.
@@ -337,6 +377,9 @@ def loadCellWeightMeasure(hx):
 
 
 def loadCellOperate():
+    '''
+    We set up the load cell
+    '''
     EMULATE_HX711 = False
 
     referenceUnit = 1       # Reference Value of Tommy's Phone

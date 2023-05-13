@@ -14,7 +14,7 @@ print("Keypad Gone!")
 
 # Test out the servo
 print("Servo coming!")
-smartcabinet.servoOperate("Open")
+smartcabinet.servoOperate(1)
 print("Servo gone!")
 
 # Test out the RFID
@@ -25,3 +25,7 @@ print("RFID gone!")
 print("Load Cell Incoming!")
 smartcabinet.loadCellOperate()
 print("Load Cell gone!")
+
+# We really only need about 4 threads. One for:
+# Camera, Keypad, RFID, and the Load Cell.
+# Servo isn't included as its called via other functions.
