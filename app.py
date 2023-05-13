@@ -79,10 +79,12 @@ def boxlock_action(action):
     if action == 1:
         box_mode = "ON"
         print("Box unlocked!")
+        smartcabinet.servoOperate(1)
     # Locks the box
     elif action == 0:
         box_mode = "OFF"
         print("Box locked!")
+        smartcabinet.servoOperate(0)
     return redirect("/templates/unlockedmode")
 
 # Various options, with the ability to disable 

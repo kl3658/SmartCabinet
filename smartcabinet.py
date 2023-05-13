@@ -281,6 +281,10 @@ def servoOperate(state):
     '''
     Opeartes the servo, runs once.
 
+    1 = Unlock
+    
+    0 = Lock
+
     Adapted and restructured from:
     https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/
     '''
@@ -294,6 +298,8 @@ def servoOperate(state):
         elif state == 0:
             lockCabinet(p)
             time.sleep(0.5)
+        else:
+            print("Invalid state")
         p.stop()
         print("Returning to previous function")
     except KeyboardInterrupt:
