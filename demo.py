@@ -32,19 +32,14 @@ print("Load Cell gone!")
 # We really only need about 4 threads. One for:
 # Camera, Keypad, RFID, and the Load Cell.
 # Servo isn't included as its called via other functions.
-cameraThread = Thread(target = smartcabinet.useCamera())
-
-keypadThread = Thread(target = smartcabinet.keypadOperate())
-
-rfidThread = Thread(target = smartcabinet.rfidOperate())
-
-loadCellThread = Thread(target = smartcabinet.loadCellOperate())
-
+cameraThread = Thread(target = smartcabinet.useCamera(), daemon=True)
 cameraThread.start()
+keypadThread = Thread(target = smartcabinet.keypadOperate(), daemon=True)
 keypadThread.start()
+rfidThread = Thread(target = smartcabinet.rfidOperate(), daemon=True)
 rfidThread.start()
+loadCellThread = Thread(target = smartcabinet.loadCellOperate(), daemon=True)
 loadCellThread.start()
-
 cameraThread.join()
 keypadThread.join()
 rfidThread.join()
