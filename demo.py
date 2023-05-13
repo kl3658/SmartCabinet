@@ -33,13 +33,14 @@ print("Load Cell gone!")
 # Camera, Keypad, RFID, and the Load Cell.
 # Servo isn't included as its called via other functions.
 cameraThread = Thread(target = smartcabinet.useCamera())
-cameraThread.start()
 
 keypadThread = Thread(target = smartcabinet.keypadOperate())
-keypadThread.start()
 
 rfidThread = Thread(target = smartcabinet.rfidOperate())
-rfidThread.start()
 
 loadCellThread = Thread(target = smartcabinet.loadCellOperate())
+
+cameraThread.start()
+keypadThread.start()
+rfidThread.start()
 loadCellThread.start()
