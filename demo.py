@@ -44,3 +44,8 @@ cameraThread.start()
 keypadThread.start()
 rfidThread.start()
 loadCellThread.start()
+
+cameraThread.join()
+keypadThread.join()
+rfidThread.join()
+loadCellThread.join()
