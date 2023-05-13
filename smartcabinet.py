@@ -1,4 +1,4 @@
-from global_ import userEntry, img_val
+from global_ import userEntry, img_val, referenceUnit
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
@@ -343,8 +343,7 @@ def rfidOperate():
     except KeyboardInterrupt:
         GPIO.cleanup()
 
-''' Task 4 '''
-# Section for the Load Cell Code
+''' Load Cell Portion '''
 
 def cleanAndExit(EMULATE_HX711):
     print("Cleaning...")
@@ -381,14 +380,24 @@ def loadCellWeightMeasure(hx):
     hx.power_up()
     time.sleep(1)
 
+def loadCellCalibration(approxWeightValue, loadCellReading):
+    '''
+    Should only be called from the website
+    '''
+    global referenceUnit
+    referenceUnit = 1
+
+    time.sleep(5)
+
+    referenceUnit = loadCellReading/approxWeightValue
 
 def loadCellOperate():
     '''
     We set up the load cell
     '''
     EMULATE_HX711 = False
-
-    referenceUnit = 1234       # Reference Value of Tommy's Phone
+    
+    global referenceUnit
 
     if not EMULATE_HX711:
         from hx711 import HX711
@@ -406,6 +415,7 @@ def loadCellOperate():
     # and I got numbers around 184000 when I added 2kg. So, according to the rule of thirds:
     # If 2000 grams is 184000 then 1000 grams is 184000 / 2000 = 92.
     #hx.set_reference_unit(113)
+    referenceUnit = 1234       # Reference Value of Tommy's Phone
     hx.set_reference_unit(referenceUnit)
     hx.reset()
     hx.tare()
