@@ -257,11 +257,7 @@ def servoSetup():
 
     p = GPIO.PWM(servoPIN, 50)      # GPIO 18 for PWM with 50Hz
     p.start(2.5)                    # Initialization
-
-    print("Does this work?")
     time.sleep(2)
-
-    print("Servo setup complete!")
 
     return p
 
@@ -288,7 +284,6 @@ def servoOperate(state):
     Adapted and restructured from:
     https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/
     '''
-    print("Servo Code Running!")
     p = servoSetup()
 
     try:
@@ -301,7 +296,6 @@ def servoOperate(state):
         else:
             print("Invalid state")
         p.stop()
-        print("Returning to previous function")
     except KeyboardInterrupt:
         p.stop()
         GPIO.cleanup()
@@ -333,6 +327,7 @@ def rfidOperate():
         while True:
             id = reader.read_id_no_block()
             if id:
+                print(id)
                 print(hex(id))
                 servoOperate(1)
                 time.sleep(5)
