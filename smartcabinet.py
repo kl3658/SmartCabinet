@@ -1,4 +1,4 @@
-from global_ import userEntry, img_val, referenceUnit, overallAccessList, keypadComboList
+from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadComboList
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
