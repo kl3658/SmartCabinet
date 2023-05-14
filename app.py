@@ -35,6 +35,8 @@ def selection_template():
 
 # Keypad page just has one button, so we can simply 
 # request the form and change the keypad code from here.
+# This can be used to enter a new passcode, but this will
+# be assigned to a random user
 @app.route("/templates/keypadmode", methods=['POST', 'GET'])
 def keypadmode_template():
     keypad_code = "No Passcode Yet"
@@ -81,7 +83,7 @@ def options_template():
     else:
         warn_msg = ""
     
-    d = [{'x': random.randint(1, 5), 'y': random.randint(6,9)}, {'x': random.randint(10, 14), 'y': random.randint(15,20)}]
+    d = [{'Person': "Joe", 'Times Accessed': random.randint(1,6)}, {'Person': "Robert", 'Times Accessed': random.randint(7,12)}]
     return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = d)
 
 if __name__ == "__main__":
