@@ -232,7 +232,7 @@ def readKeypadLine(line, characters, C1, C2, C3):
                     if logEntry['Person'] == user:
                         #print("New val: ", AccessAmount[user])
                         #print("Print Value: ", logEntry['Times Accessed'])
-                        logEntry['Times Accessed'] = "{accessAmount} at {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
+                        logEntry['Times Accessed'] = "{accessAmount} Times. Last Accessed: {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
                         #print("Print New Value: ", logEntry['Times Accessed'])
                         break
                 successFlag = True
@@ -382,7 +382,7 @@ def rfidOperate():
                             if logEntry['Person'] == user:
                                 #print("New val: ", AccessAmount[user])
                                 #print("Print Value: ", logEntry['Times Accessed'])
-                                logEntry['Times Accessed'] = "{accessAmount} at {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
+                                logEntry['Times Accessed'] = "{accessAmount} Times. Last Accessed: {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
                                 #print("Print New Value: ", logEntry['Times Accessed'])
                         break
                 # Ten seconds for the bowl to stay open
