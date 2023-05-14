@@ -232,6 +232,8 @@ def readKeypadLine(line, characters, C1, C2, C3):
                     if logEntry['Person'] == user:
                         print("New val: ", AccessAmount[user])
                         print("Print Value: ", logEntry['Times Accessed'])
+                        logEntry['Times Accessed'] = "{accessAmount} at {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
+                        print("Print New Value: ", logEntry['Times Accessed'])
                 successFlag = True
             # Break out of loop if we succeeeded in finding someone.
             if successFlag == True:
