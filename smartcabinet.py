@@ -1,4 +1,4 @@
-from global_ import userEntry, img_val, referenceUnit, overallAccessList
+from global_ import userEntry, img_val, referenceUnit, overallAccessList, keypadComboList
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
@@ -211,10 +211,11 @@ def readKeypadLine(line, characters, C1, C2, C3):
     GPIO.output(line, GPIO.LOW)
 
     # When 4 or more keys are entered, we take an appropriate action if it matches.
-    if len(userEntry) == len(correctKey):
+    if len(userEntry) == 4:
         print("Correct key: ", crtKeyStr)
-        print("Same length")
         if userEntry == correctKey:
+            for user, keyCode in keypadComboList.items():
+                print("Keycode {code} for {user}".format(code=keyCode, user=user))
             print("Unlocked")
             servoOperate(1)
         else:
@@ -320,7 +321,7 @@ def rfidOperate():
     '''
     reader = rfidSetup()
     print("Hold a tag near the reader")
-    print("Reading tag in 3 second...")
+    print("Reading tag in 3 seconds...")
     time.sleep(3)
 
     # Keep it for now. We only want it to run if the user calls for it from the browser UI.

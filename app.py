@@ -42,7 +42,7 @@ def keypadmode_template():
     keypad_code = "No Passcode Yet"
     if request.method=="POST":
         keypad_code = request.form['virtual_keypad_input']
-        newPerson = {'Person': "newPerson{}: ".format(random.randint(1,5)), 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=0, currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}
+        newPerson = {'Person': "newPerson{}".format(random.randint(1,5)), 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=0, currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}
         smartcabinet.overallAccessList.append(newPerson)
     return render_template("keypadmode.html", passcode_entered = keypad_code)
 
