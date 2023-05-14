@@ -420,7 +420,7 @@ def loadCellWeightMeasure(hx):
     global currentCellWeight, weightCalibOffset
     currentCellWeight = val + (int(weightCalibOffset))
     print("Load Cell Weight: ", currentCellWeight, " g")
-    print("Load Cell Offset: ", weightCalibOffset)
+    #print("Load Cell Offset: ", weightCalibOffset)
 
     # To get weight from both channels (if you have load cells hooked up
     # to both channel A and B), do something like this
