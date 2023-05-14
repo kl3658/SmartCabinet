@@ -84,7 +84,7 @@ def options_template():
         warn_msg = ""
     
     d = [{'Person': "Joe", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(1,6), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}, {'Person': "Robert", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(11,15), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}]
-    return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = d)
+    return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = smartcabinet.keyPadCodeList)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
