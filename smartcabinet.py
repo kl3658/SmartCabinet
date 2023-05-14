@@ -1,4 +1,4 @@
-from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadComboList
+from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadComboList, AccessAmount
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
@@ -223,7 +223,12 @@ def readKeypadLine(line, characters, C1, C2, C3):
             print("Keycode {code} for {user}".format(code=keyCode, user=user))
             if userKeyStr == str(keyCode):
                 # If found, we welcome the user, and set a success flag.
+                # Increase the value of accesses by one, and finally,
+                # we must update the overallAccessLog, for the user
                 print("Welcome {user}!".format(user=user))
+                AccessAmount[user] += 1
+                for logEntry in overallAccessLog:
+                    print("Log Entry: ", logEntry)
                 successFlag = True
             # Break out of loop if we succeeeded in finding someone.
             if successFlag == True:
