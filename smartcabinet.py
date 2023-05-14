@@ -213,9 +213,9 @@ def readKeypadLine(line, characters, C1, C2, C3):
     # When 4 or more keys are entered, we take an appropriate action if it matches.
     if len(userEntry) == 4:
         print("Correct key: ", crtKeyStr)
+        for user, keyCode in keypadComboList.items():
+            print("Keycode {code} for {user}".format(code=keyCode, user=user))
         if userEntry == correctKey:
-            for user, keyCode in keypadComboList.items():
-                print("Keycode {code} for {user}".format(code=keyCode, user=user))
             print("Unlocked")
             servoOperate(1)
         else:
