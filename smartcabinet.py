@@ -191,6 +191,9 @@ def readKeypadLine(line, characters, C1, C2, C3):
     '''
     global userEntry
     correctKey = ["1", "2", "3", "4"]
+    crtKeyStr = ""
+    for val in correctKey:
+        crtKeyStr += val
 
     GPIO.output(line, GPIO.HIGH)
     if(GPIO.input(C1) == 1):
@@ -209,7 +212,7 @@ def readKeypadLine(line, characters, C1, C2, C3):
 
     # When 4 or more keys are entered, we take an appropriate action if it matches.
     if len(userEntry) == len(correctKey):
-        print("Correct key: ", correctKey)
+        print("Correct key: ", crtKeyStr)
         print("Same length")
         if userEntry == correctKey:
             print("Unlocked")
