@@ -33,33 +33,6 @@ def start_template():
 def selection_template():
     return render_template("selection.html")
 
-# Tap Mode page has two buttons, both for changing the 
-# RFID tapping capabilities
-@app.route("/templates/tapmode")
-def tapmode_template():
-    on = ""
-    off = ""
-    if rfid_mode == "ON":
-        on = "disabled"
-        off = ""
-    elif rfid_mode == "OFF":
-        on = ""
-        off = "disabled"
-    return render_template("tapmode.html", rfid_state = rfid_mode, ondisabled = on, offdisabled = off)
-
-@app.route("/templates/rfidtag/<int:action>")
-def rfid_action(action):
-    global rfid_mode
-    # Enables RFID
-    if action == 1:
-        rfid_mode = "ON"
-        print("Turning RFID on")
-    # Disables RFID
-    elif action == 0:
-        rfid_mode = "OFF"
-        print("Turning RFID off")
-    return redirect("/templates/tapmode")
-
 # Keypad page just has one button, so we can simply 
 # request the form and change the keypad code from here.
 @app.route("/templates/keypadmode", methods=['POST', 'GET'])
