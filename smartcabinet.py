@@ -242,6 +242,9 @@ def readKeypadLine(line, characters, C1, C2, C3):
         if successFlag == True:
             print("Keypad: Unlocked")
             servoOperate(1)
+            # Give time to collect the snacks
+            time.sleep(10)
+            servoOperate(0)
         else:
             print("Keypad: Wrong keycode! Try again")
             servoOperate(0)
