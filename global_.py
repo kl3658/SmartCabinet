@@ -5,3 +5,5 @@ overallAccessLog = [{'Person': "Joe", 'Times Accessed': "{accessAmount} at {curr
 keypadComboList = {"Joe": 1234, "Mary": 3456}
 rfidTags = {"Joe": '0xf9935bb382', "Mary": '0x89ac80e94c'}
 AccessAmount = {"Joe": 2, "Mary": 0}
+currentCellWeight = 0
+weightCalibOffset = 0

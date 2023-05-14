@@ -1,4 +1,4 @@
-from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadComboList, AccessAmount, rfidTags
+from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadComboList, AccessAmount, rfidTags, currentCellWeight, weightCalibOffset
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
@@ -418,6 +418,9 @@ def loadCellWeightMeasure(hx):
     # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
     val = hx.get_weight(5)
     print("Load Cell Weight: ", val, " g")
+    global currentCellWeight, weightCalibOffset
+    currentCellWeight = val + (2*weightCalibOffset)
+    print("Load Cell Offset: ", weightCalibOffset)
 
     # To get weight from both channels (if you have load cells hooked up
     # to both channel A and B), do something like this
@@ -429,16 +432,9 @@ def loadCellWeightMeasure(hx):
     hx.power_up()
     time.sleep(1)
 
-def loadCellCalibration(approxWeightValue, loadCellReading):
-    '''
-    Should only be called from the website
-    '''
-    global referenceUnit
-    referenceUnit = 1
-
-    time.sleep(5)
-
-    referenceUnit = loadCellReading/approxWeightValue
+def loadCellCalibrate(CalibrationVal):
+    global weightCalibOffset
+    weightCalibOffset = CalibrationVal
 
 def loadCellOperate():
     '''
@@ -461,8 +457,8 @@ def loadCellOperate():
     # HOW TO CALCULATE THE REFFERENCE UNIT
     # To set the reference unit to 1. Put 1kg on your sensor or anything you have and know exactly how much it weights.
     # In this case, 92 is 1 gram because, with 1 as a reference unit I got numbers near 0 without any weight
-    # and I got numbers around 184000 when I added 2kg. So, according to the rule of thirds:
-    # If 2000 grams is 184000 then 1000 grams is 184000 / 2000 = 92.
+    # and I got numbers around 902000 when I added 2kg. So, according to the rule of thirds:
+    # If 2000 grams is 902000 then 1000 grams is 902000 / 2000 = 451.
     #hx.set_reference_unit(113)
     referenceUnit = 451       # Reference Value of Tommy's Phone
     hx.set_reference_unit(referenceUnit)

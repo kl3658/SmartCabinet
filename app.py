@@ -6,8 +6,8 @@ import random, smartcabinet, time
 # in this file to streamline the process, and get to threads
 # quickly
 
-global rfid_mode, box_mode
-rfid_mode = "Unknown"
+global personVal, box_mode
+personVal = 1
 box_mode = "Unknown"
 app = Flask(__name__, static_folder='assets')
 
@@ -40,9 +40,10 @@ def selection_template():
 @app.route("/templates/keypadmode", methods=['POST', 'GET'])
 def keypadmode_template():
     keypad_code = "No Passcode Yet"
+    global personVal
     if request.method=="POST":
         keypad_code = request.form['virtual_keypad_input']
-        newPerson = {'Person': "newPerson{}".format(random.randint(1,5)), 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=0, currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}
+        newPerson = {'Person': "newPerson{}".format(personVal), 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=0, currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}
         smartcabinet.overallAccessLog.append(newPerson)
     return render_template("keypadmode.html", passcode_entered = keypad_code)
 
@@ -78,13 +79,14 @@ def boxlock_action(action):
 # someone out and checking the weight of the box.
 @app.route("/templates/options", methods=['POST', 'GET'])
 def options_template():
-    #current_weight = smartcabinet.loadCellWeightMeasure()
-    current_weight = random.randint(1, 20)
+    current_weight = smartcabinet.currentCellWeight
     if current_weight < 5:
         warn_msg = "WARNING!"
     else:
         warn_msg = ""
-    
+    if request.method=="POST":
+        weightCalibOffset = request.form['weight_offset_input']
+        smartcabinet.loadCellCalibrate(weightCalibOffset)
     # d = [{'Person': "Joe", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(1,6), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}, {'Person': "Robert", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(11,15), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}]
     return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = smartcabinet.overallAccessLog)
 
