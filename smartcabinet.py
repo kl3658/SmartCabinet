@@ -100,8 +100,8 @@ def useCamera(thisFunctionCall = True):
     While the camera is turned on, we can perform various properties, such as taking pictures and even
     being to change its properties on the fly.
 
-    otherFunctionCall will be used to see if other functions call this function.
-    Default value of False
+    thisFunctionCall will be used to see if other functions call this function.
+    Default value of True
     '''
     global img_val
     nightModeBit = 0
@@ -120,7 +120,7 @@ def useCamera(thisFunctionCall = True):
             img_val += 1
             # camera.close()
             return
-        key = input('Press key, then hit Enter. Enter p to snap a photo. Enter q to exit: ')
+        key = input('Camera: Press key, then hit Enter. Enter p to snap a photo. Enter q to exit: ')
         if key == 'f':
             print('Flipping Vertical Orientation...')
             # camera = flipVerticalOrient(camera)
@@ -200,15 +200,15 @@ def readKeypadLine(line, characters, C1, C2, C3):
     if(GPIO.input(C1) == 1):
         print(characters[0])
         userEntry.append(characters[0])
-        print("User Entry so far: ", userEntry)
+        print("Keypad: User Entry so far: ", userEntry)
     if(GPIO.input(C2) == 1):
         print(characters[1])
         userEntry.append(characters[1])
-        print("User Entry so far: ", userEntry)
+        print("Keypad: User Entry so far: ", userEntry)
     if(GPIO.input(C3) == 1):
         print(characters[2])
         userEntry.append(characters[2])
-        print("User Entry so far: ", userEntry)
+        print("Keypad: User Entry so far: ", userEntry)
     GPIO.output(line, GPIO.LOW)
 
     # When 4 or more keys are entered, we take an appropriate action if it matches.
@@ -216,11 +216,11 @@ def readKeypadLine(line, characters, C1, C2, C3):
         successFlag = False
         for val in userEntry:
             userKeyStr += val
-        print("User Entry: ", userKeyStr)
-        print("Correct key: ", crtKeyStr)
+        #print("User Entry: ", userKeyStr)
+        #print("Correct key: ", crtKeyStr)
         # Iterate through the list of keypad combos for workers
         for user, keyCode in keypadComboList.items():
-            print("Keycode {code} for {user}".format(code=keyCode, user=user))
+            #print("Keycode {code} for {user}".format(code=keyCode, user=user))
             if userKeyStr == str(keyCode):
                 # If found, we welcome the user, and set a success flag.
                 # Increase the value of accesses by one, and finally,
@@ -230,37 +230,37 @@ def readKeypadLine(line, characters, C1, C2, C3):
                 for logEntry in overallAccessLog:
                     #print("Log Entry: ", logEntry['Person'])
                     if logEntry['Person'] == user:
-                        print("New val: ", AccessAmount[user])
-                        print("Print Value: ", logEntry['Times Accessed'])
+                        #print("New val: ", AccessAmount[user])
+                        #print("Print Value: ", logEntry['Times Accessed'])
                         logEntry['Times Accessed'] = "{accessAmount} at {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
-                        print("Print New Value: ", logEntry['Times Accessed'])
+                        #print("Print New Value: ", logEntry['Times Accessed'])
                         break
                 successFlag = True
             # Break out of loop if we succeeeded in finding someone.
             if successFlag == True:
                 break
         if successFlag == True:
-            print("Unlocked")
+            print("Keypad: Unlocked")
             servoOperate(1)
         else:
-            print("Wrong keycode! Try again")
+            print("Keypad: Wrong keycode! Try again")
             servoOperate(0)
         userEntry.clear()
 
     elif len(userEntry) >= len(correctKey):
-        print("Somehow entered more than 4 characters")
+        print("Keypad: Somehow entered more than 4 characters")
         userEntry.clear()
 
 def keypadOperate():
     '''
     Reads the inputs of the keypad and determines if the manager can access the site
     '''
-    print("keypadOperate running!")
+    print("Keypad running!")
     # Redefine the pins if necessary by calling this function and changing the pins from there.
     R1, R2, R3, R4, C1, C2, C3 = keypadGPIOSetup()
     pinGPIOSetup(R1, R2, R3, R4, C1, C2, C3)
 
-    print("back to keypadOperate")
+    #print("back to keypadOperate")
 
     try:
         while True:
@@ -279,7 +279,7 @@ def servoSetup():
     '''
     Sets up the servo, before returning to the previous function.
     '''
-    print("Setting up servo!")
+    print("Servo: Setting up servo!")
     GPIO.setwarnings(False)
     servoPIN = 18
     GPIO.setmode(GPIO.BCM)
@@ -296,12 +296,18 @@ def lockCabinet(p):
     Locks the cabinet
     '''
     p.ChangeDutyCycle(2.5)
+    print("Servo: Locking cabinet")
+    camFuncCall = False
+    useCamera(camFuncCall)
 
 def unlockCabinet(p):
     '''
     Locks the cabinet
     '''
     p.ChangeDutyCycle(12.5)
+    print("Servo: Unlocking cabinet")
+    camFuncCall = False
+    useCamera(camFuncCall)
 
 def servoOperate(state):
     '''
@@ -324,7 +330,7 @@ def servoOperate(state):
             lockCabinet(p)
             time.sleep(0.5)
         else:
-            print("Invalid state")
+            print("Servo: Invalid state")
         p.stop()
     except KeyboardInterrupt:
         p.stop()
@@ -336,9 +342,9 @@ def rfidSetup():
     '''
     Sets up the RFID chip
     '''
-    print("Setting up RFID")
+    print("RFID: Setting up RFID")
     reader = SimpleMFRC522()
-    print("RFID Setup Complete!")
+    print("RFID: RFID Setup Complete!")
     return reader
 
 def rfidOperate():
@@ -346,8 +352,8 @@ def rfidOperate():
     Reads the RFID chip and cards
     '''
     reader = rfidSetup()
-    print("Hold a tag near the reader")
-    print("Reading tag in 3 seconds...")
+    print("RFID: Hold a tag near the reader")
+    print("RFID: Reading tag in 3 seconds...")
     time.sleep(3)
 
     # Keep it for now. We only want it to run if the user calls for it from the browser UI.
@@ -357,29 +363,31 @@ def rfidOperate():
         while True:
             id = reader.read_id_no_block()
             if id:
-                print(hex(id))
+                print("RFID: ", hex(id))
+                # Open the bowl of snacks
                 servoOperate(1)
                 for user, rfidCode in rfidTags.items():
-                    print("Keycode {code} for {user}".format(code=rfidCode, user=user))
+                    #print("Keycode {code} for {user}".format(code=rfidCode, user=user))
                     if str(hex(id)) == str(rfidCode):
                         # If found, we welcome the user, and set a success flag.
                         # Increase the value of accesses by one, and finally,
                         # we must update the overallAccessLog, for the user
-                        print("Welcome {user}!".format(user=user))
+                        print("RFID: Welcome {user}!".format(user=user))
                         AccessAmount[user] += 1
                         for logEntry in overallAccessLog:
                             #print("Log Entry: ", logEntry['Person'])
                             if logEntry['Person'] == user:
-                                print("New val: ", AccessAmount[user])
-                                print("Print Value: ", logEntry['Times Accessed'])
+                                #print("New val: ", AccessAmount[user])
+                                #print("Print Value: ", logEntry['Times Accessed'])
                                 logEntry['Times Accessed'] = "{accessAmount} at {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
-                                print("Print New Value: ", logEntry['Times Accessed'])
+                                #print("Print New Value: ", logEntry['Times Accessed'])
                         break
                 # Ten seconds for the bowl to stay open
                 time.sleep(10)
                 servoOperate(0)
             else:
-                print("No tag detected")
+                #print("RFID: No tag detected")
+                pass
             time.sleep(3)
     except KeyboardInterrupt:
         GPIO.cleanup()
@@ -409,7 +417,7 @@ def loadCellWeightMeasure(hx):
 
     # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
     val = hx.get_weight(5)
-    print(val)
+    print("Load Cell Weight: ", val, " g")
 
     # To get weight from both channels (if you have load cells hooked up
     # to both channel A and B), do something like this
@@ -442,10 +450,10 @@ def loadCellOperate():
 
     if not EMULATE_HX711:
         from hx711 import HX711
-        print("Not emualated")
+        print("Load Cell: HX711 Not emualated")
     else:
         from emulated_hx711 import HX711
-        print("Emulated")
+        print("Load Cell: HX711 Emulated")
 
     hx = HX711(5, 6) # GPIO Pins 5 and 6
     hx.set_reading_format("MSB", "MSB")
@@ -460,7 +468,7 @@ def loadCellOperate():
     hx.set_reference_unit(referenceUnit)
     hx.reset()
     hx.tare()
-    print("Tare done! Add weight now...")
+    print("Load Cell: Tare done! Add weight now...")
     
     while True:
         try:
