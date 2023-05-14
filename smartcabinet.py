@@ -192,6 +192,7 @@ def readKeypadLine(line, characters, C1, C2, C3):
     global userEntry
     correctKey = ["1", "2", "3", "4"]
     crtKeyStr = ""
+    userKeyStr = ""
     for val in correctKey:
         crtKeyStr += val
 
@@ -212,17 +213,25 @@ def readKeypadLine(line, characters, C1, C2, C3):
 
     # When 4 or more keys are entered, we take an appropriate action if it matches.
     if len(userEntry) == 4:
+        for val in userEntry:
+            userKeyStr += val
+        print("User Entry: ", userKeyStr)
         print("Correct key: ", crtKeyStr)
+        # Iterate through the list of keypad combos for workers
         for user, keyCode in keypadComboList.items():
             print("Keycode {code} for {user}".format(code=keyCode, user=user))
+            if userKeyStr == keyCode:
+                print("Welcome {user}!".format(user=user))
         if userEntry == correctKey:
             print("Unlocked")
             servoOperate(1)
         else:
-            print("Wrong key! Try again")
+            print("Wrong keycode! Try again")
             servoOperate(0)
         userEntry.clear()
+
     elif len(userEntry) >= len(correctKey):
+        print("Somehow entered more than 4 characters")
         userEntry.clear()
 
 def keypadOperate():
