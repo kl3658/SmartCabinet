@@ -418,7 +418,7 @@ def loadCellWeightMeasure(hx):
     # Prints the weight. Comment if you're debbuging the MSB and LSB issue.
     val = hx.get_weight(5)
     global currentCellWeight, weightCalibOffset
-    currentCellWeight = val + (int(weightCalibOffset))*2
+    currentCellWeight = val + (int(weightCalibOffset))
     print("Load Cell Weight: ", currentCellWeight, " g")
     print("Load Cell Offset: ", weightCalibOffset)
 
