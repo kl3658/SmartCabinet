@@ -79,7 +79,7 @@ def boxlock_action(action):
 # someone out and checking the weight of the box.
 @app.route("/templates/options", methods=['POST', 'GET'])
 def options_template():
-    current_weight = smartcabinet.currentCellWeight
+    current_weight = int(smartcabinet.currentCellWeight)
     if current_weight < 5:
         warn_msg = "WARNING!"
     else:
