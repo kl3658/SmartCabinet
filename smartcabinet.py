@@ -220,7 +220,7 @@ def readKeypadLine(line, characters, C1, C2, C3):
         # Iterate through the list of keypad combos for workers
         for user, keyCode in keypadComboList.items():
             print("Keycode {code} for {user}".format(code=keyCode, user=user))
-            if userKeyStr == keyCode:
+            if userKeyStr == str(keyCode):
                 print("Welcome {user}!".format(user=user))
         if userEntry == correctKey:
             print("Unlocked")
