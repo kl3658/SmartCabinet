@@ -44,6 +44,8 @@ def keypadmode_template():
     if request.method=="POST":
         keypad_code = request.form['virtual_keypad_input']
         newPerson = {'Person': "newPerson{}".format(personVal), 'Times Accessed': "{accessAmount} Times. Last Accessed: {currentDateTime}".format(accessAmount=0, currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}
+        smartcabinet.keypadComboList['newPerson{}'.format(personVal)] = int(keypad_code)
+        smartcabinet.AccessAmount['newPerson{}'.format(personVal)] = 0
         smartcabinet.overallAccessLog.append(newPerson)
     return render_template("keypadmode.html", passcode_entered = keypad_code)
 
