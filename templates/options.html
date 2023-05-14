@@ -19,7 +19,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col"><div class="table-responsive">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <form method="post"><input class="form-control" type="number" name="weight_offset_input" placeholder="Enter the Weight of Object in Grams to Calibrate"><button class="btn btn-primary" type="submit" style="background: rgb(179,0,171);">Calibrate Weight</button></form>
+                    </div>
+                </div><div class="table-responsive">
     <table class="table">
         <thead>
             <tr>
@@ -36,7 +41,8 @@
         {% endfor %}
         </tbody>
     </table>
-</div></div>
+</div>
+            </div>
         </div>
     </div>
     <div class="col" style="text-align: left;margin-top: 0px;"><a class="btn btn-info" role="button" style="margin-left: 18px;text-align: left;margin-bottom: 5px;margin-top: 5px;margin-right: 18px;" href="/templates/selection">Return to Selection Screen</a></div>
