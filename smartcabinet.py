@@ -115,7 +115,7 @@ def useCamera(thisFunctionCall = True):
     # cameraSetup(camera)
     while True:
         if thisFunctionCall == False:
-            print("Taking picture, then returning to previous function...")
+            print("Camera: Taking picture, then returning to previous function...")
             # camera = savePhotoToFile(img_val, nightModeBit, camera)
             img_val += 1
             # camera.close()
@@ -128,7 +128,7 @@ def useCamera(thisFunctionCall = True):
             print('Changing ISO of the Camera...')
             # camera = setISOofCamera(camera)
         if key == 'p':
-            print('Taking Picture...')
+            print('Camera: Taking Picture...')
             # camera = savePhotoToFile(img_val, nightModeBit, camera)
             img_val += 1
         if key == 'n':
