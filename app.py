@@ -83,7 +83,7 @@ def options_template():
     else:
         warn_msg = ""
     
-    d = [{'Person': "Joe", 'Times Accessed': random.randint(1,6)}, {'Person': "Robert", 'Times Accessed': random.randint(7,12)}]
+    d = [{'Person': "Joe", 'Times Accessed': [random.randint(1,6), random.randint(7,10)]}, {'Person': "Robert", 'Times Accessed': [random.randint(11,15), random.randint(16,20)]}]
     return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = d)
 
 if __name__ == "__main__":
