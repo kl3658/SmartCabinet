@@ -1,4 +1,4 @@
-from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadComboList, AccessAmount
+from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadComboList, AccessAmount, rfidTags
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
@@ -228,12 +228,13 @@ def readKeypadLine(line, characters, C1, C2, C3):
                 print("Welcome {user}!".format(user=user))
                 AccessAmount[user] += 1
                 for logEntry in overallAccessLog:
-                    print("Log Entry: ", logEntry['Person'])
+                    #print("Log Entry: ", logEntry['Person'])
                     if logEntry['Person'] == user:
                         print("New val: ", AccessAmount[user])
                         print("Print Value: ", logEntry['Times Accessed'])
                         logEntry['Times Accessed'] = "{accessAmount} at {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
                         print("Print New Value: ", logEntry['Times Accessed'])
+                        break
                 successFlag = True
             # Break out of loop if we succeeeded in finding someone.
             if successFlag == True:
@@ -356,10 +357,26 @@ def rfidOperate():
         while True:
             id = reader.read_id_no_block()
             if id:
-                print(id)
                 print(hex(id))
                 servoOperate(1)
-                time.sleep(5)
+                for user, rfidCode in rfidTags.items():
+                    print("Keycode {code} for {user}".format(code=rfidCode, user=user))
+                    if str(hex(id)) == str(rfidCode):
+                        # If found, we welcome the user, and set a success flag.
+                        # Increase the value of accesses by one, and finally,
+                        # we must update the overallAccessLog, for the user
+                        print("Welcome {user}!".format(user=user))
+                        AccessAmount[user] += 1
+                        for logEntry in overallAccessLog:
+                            #print("Log Entry: ", logEntry['Person'])
+                            if logEntry['Person'] == user:
+                                print("New val: ", AccessAmount[user])
+                                print("Print Value: ", logEntry['Times Accessed'])
+                                logEntry['Times Accessed'] = "{accessAmount} at {currentDateTime}".format(accessAmount=AccessAmount[user], currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))
+                                print("Print New Value: ", logEntry['Times Accessed'])
+                        break
+                # Ten seconds for the bowl to stay open
+                time.sleep(10)
                 servoOperate(0)
             else:
                 print("No tag detected")
