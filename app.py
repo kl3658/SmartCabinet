@@ -42,6 +42,8 @@ def keypadmode_template():
     keypad_code = "No Passcode Yet"
     if request.method=="POST":
         keypad_code = request.form['virtual_keypad_input']
+        newPerson = {'Person': "newPerson{}: ".format(random.randint(1,5)), 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=0, currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}
+        smartcabinet.overallAccessList.append(newPerson)
     return render_template("keypadmode.html", passcode_entered = keypad_code)
 
 # Unlock page has two buttons in the website
@@ -83,8 +85,8 @@ def options_template():
     else:
         warn_msg = ""
     
-    d = [{'Person': "Joe", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(1,6), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}, {'Person': "Robert", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(11,15), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}]
-    return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = smartcabinet.keyPadCodeList)
+    # d = [{'Person': "Joe", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(1,6), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}, {'Person': "Robert", 'Times Accessed': "{accessAmount} at {currentDateTime}".format(accessAmount=random.randint(11,15), currentDateTime=time.strftime("%m/%d/%Y, %H:%M:%S"))}]
+    return render_template("options.html", weight_value = current_weight, warning_message = warn_msg, hist = smartcabinet.overallAccessList)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
