@@ -23,14 +23,14 @@ def start():
 
 @app.route("/templates/start")
 def start_template():
-    return render_template("start.html")
-
-@app.route("/templates/selection")
-def selection_template():
     cameraThread.start()
     keypadThread.start()
     rfidThread.start()
     loadCellThread.start()
+    return render_template("start.html")
+
+@app.route("/templates/selection")
+def selection_template():
     return render_template("selection.html")
 
 # Keypad page just has one button, so we can simply 
