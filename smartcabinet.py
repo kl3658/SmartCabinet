@@ -229,6 +229,8 @@ def readKeypadLine(line, characters, C1, C2, C3):
                 AccessAmount[user] += 1
                 for logEntry in overallAccessLog:
                     print("Log Entry: ", logEntry['Person'])
+                    if logEntry['Person'] == user:
+                        print("Print Value: ", logEntry['Times Accessed'])
                 successFlag = True
             # Break out of loop if we succeeeded in finding someone.
             if successFlag == True:
