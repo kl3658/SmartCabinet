@@ -213,6 +213,7 @@ def readKeypadLine(line, characters, C1, C2, C3):
 
     # When 4 or more keys are entered, we take an appropriate action if it matches.
     if len(userEntry) == 4:
+        successFlag = False
         for val in userEntry:
             userKeyStr += val
         print("User Entry: ", userKeyStr)
@@ -221,8 +222,13 @@ def readKeypadLine(line, characters, C1, C2, C3):
         for user, keyCode in keypadComboList.items():
             print("Keycode {code} for {user}".format(code=keyCode, user=user))
             if userKeyStr == str(keyCode):
+                # If found, we welcome the user, and set a success flag.
                 print("Welcome {user}!".format(user=user))
-        if userEntry == correctKey:
+                successFlag = True
+            # Break out of loop if we succeeeded in finding someone.
+            if successFlag == True:
+                break
+        if successFlag == True:
             print("Unlocked")
             servoOperate(1)
         else:
