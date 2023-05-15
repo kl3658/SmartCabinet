@@ -300,8 +300,6 @@ def lockCabinet(p):
     '''
     p.ChangeDutyCycle(2.5)
     print("Servo: Locking cabinet")
-    camFuncCall = False
-    useCamera(camFuncCall)
 
 def unlockCabinet(p):
     '''
