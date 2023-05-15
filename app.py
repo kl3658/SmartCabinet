@@ -82,7 +82,7 @@ def boxlock_action(action):
 @app.route("/templates/options", methods=['POST', 'GET'])
 def options_template():
     current_weight = int(smartcabinet.currentCellWeight)
-    if current_weight < 5:
+    if current_weight < 11:
         warn_msg = "Refill the snacks now!"
     else:
         warn_msg = ""
