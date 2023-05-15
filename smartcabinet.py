@@ -2,7 +2,7 @@ from global_ import userEntry, img_val, referenceUnit, overallAccessLog, keypadC
 from fractions import Fraction
 from mfrc522 import SimpleMFRC522
 
-import random, math, time, sys, picamera
+import math, time, sys, picamera
 import RPi.GPIO as GPIO
 
 def info():
